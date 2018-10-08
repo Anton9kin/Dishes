@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="folder_root">Android</string>
+    <string name="folder_data">data</string>
+    <string name="folder_main">com.example.devyatin.dishes</string>
+    <string name="folder_path">Dishes</string>
+    <string name="folder_first">first</string>
+    <string name="folder_second">second</string>
+    <string name="folder_salad">salad</string>
+    <string name="folder_snacks">snacks</string>
+    <string name="folder_bakes">bakes</string>
+    <string name="folder_deserts">deserts</string>
+    <string name="folder_drinks">drinks</string>
+
+</resources>

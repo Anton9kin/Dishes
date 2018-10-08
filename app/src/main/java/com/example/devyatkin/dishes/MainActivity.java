@@ -1,8 +1,13 @@
 package com.example.devyatkin.dishes;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,9 +18,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static final int REQUEST_PERMISSION_WRITE = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +54,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        InitDirectory();
     }
 
     @Override
@@ -102,5 +117,64 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    private boolean checkFilePath(String path){
+        File file = new File(Environment.getExternalStorageDirectory(), path);
+        if (file.exists()){
+            //Toast.makeText(this, "Файл (" + path + ") существует", Toast.LENGTH_LONG).show();
+            return true;
+        }else{
+            //Toast.makeText(this, "Файл (" + path + ") отсутсвует", Toast.LENGTH_LONG).show();
+            file.mkdirs();
+            return false;
+        }
+    }
+
+    private void InitDirectory(){
+        if (!checkPermissions()){
+            Toast.makeText(this, "Нет разрешения", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String path = getString(R.string.folder_root);
+        path += "/" + getResources().getString(R.string.folder_data);
+        path += "/" + getResources().getString(R.string.folder_main);
+        path += "/" + getResources().getString(R.string.folder_path);
+
+        checkFilePath(path + "/" + getResources().getString(R.string.folder_first));
+        checkFilePath(path + "/" + getResources().getString(R.string.folder_second));
+        checkFilePath(path + "/" + getResources().getString(R.string.folder_salad));
+        checkFilePath(path + "/" + getResources().getString(R.string.folder_snacks));
+        checkFilePath(path + "/" + getResources().getString(R.string.folder_bakes));
+        checkFilePath(path + "/" + getResources().getString(R.string.folder_deserts));
+        checkFilePath(path + "/" + getResources().getString(R.string.folder_drinks));
+    }
+
+    private boolean checkPermissions(){
+
+        if(!isExternalStorageReadable() || !isExternalStorageWriteable()){
+            Toast.makeText(this, "Внешнее хранилище не доступно", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if(permissionCheck!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_WRITE);
+            return false;
+        }
+        return true;
+    }
+
+    // проверяем, доступно ли внешнее хранилище для чтения и записи
+    public boolean isExternalStorageWriteable(){
+        String state = Environment.getExternalStorageState();
+        return  Environment.MEDIA_MOUNTED.equals(state);
+    }
+    // проверяем, доступно ли внешнее хранилище хотя бы только для чтения
+    public boolean isExternalStorageReadable(){
+        String state = Environment.getExternalStorageState();
+        return  (Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state));
     }
 }
