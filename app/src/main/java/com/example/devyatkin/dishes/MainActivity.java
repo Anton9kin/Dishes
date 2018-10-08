@@ -20,6 +20,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,6 +31,13 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int REQUEST_PERMISSION_WRITE = 1001;
+    private String dir_first;
+    private String dir_second;
+    private String dir_salad;
+    private String dir_snack;
+    private String dir_bake;
+    private String dir_desert;
+    private String dir_drink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,22 +105,28 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         TextView text = (TextView)findViewById(R.id.content_header);
-
         if (id == R.id.first_dishes) {
             // Handle the camera action
-            text.setText("Первые блюда");
+            File[] dir_list = getDirList(dir_first);
+            text.setText("Первые блюда - " + dir_list.length);
         } else if (id == R.id.second_dishes) {
-            text.setText("Вторые блюда");
+            File[] dir_list = getDirList(dir_second);
+            text.setText("Вторые блюда - " + dir_list.length);
         } else if (id == R.id.salads) {
-            text.setText("Салаты");
+            File[] dir_list = getDirList(dir_salad);
+            text.setText("Салаты - " + dir_list.length);
         } else if (id == R.id.snacks) {
-            text.setText("Закуски");
+            File[] dir_list = getDirList(dir_snack);
+            text.setText("Закуски - " + dir_list.length);
         } else if (id == R.id.bakes) {
-            text.setText("Выпечка");
+            File[] dir_list = getDirList(dir_bake);
+            text.setText("Выпечка - " + dir_list.length);
         } else if (id == R.id.deserts) {
-            text.setText("Десерты");
+            File[] dir_list = getDirList(dir_desert);
+            text.setText("Десерты - " + dir_list.length);
         } else if (id == R.id.drinks) {
-            text.setText("Напитки");
+            File[] dir_list = getDirList(dir_drink);
+            text.setText("Напитки - " + dir_list.length);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -119,6 +134,11 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+
+    File[] getDirList(String path){
+        File dir = new File(Environment.getExternalStorageDirectory(), path);
+        return dir.listFiles();
+    }
 
     //re-init file system
     private boolean checkFilePath(String path){
@@ -140,14 +160,21 @@ public class MainActivity extends AppCompatActivity
         }
 
         String path = getString(R.string.folder_root);
+        dir_first = path + "/" + getResources().getString(R.string.folder_first);
+        dir_second = path + "/" + getResources().getString(R.string.folder_second);
+        dir_salad = path + "/" + getResources().getString(R.string.folder_salad);
+        dir_snack = path + "/" + getResources().getString(R.string.folder_snacks);
+        dir_bake = path + "/" + getResources().getString(R.string.folder_bakes);
+        dir_desert = path + "/" + getResources().getString(R.string.folder_deserts);
+        dir_drink = path + "/" + getResources().getString(R.string.folder_drinks);
 
-        checkFilePath(path + "/" + getResources().getString(R.string.folder_first));
-        checkFilePath(path + "/" + getResources().getString(R.string.folder_second));
-        checkFilePath(path + "/" + getResources().getString(R.string.folder_salad));
-        checkFilePath(path + "/" + getResources().getString(R.string.folder_snacks));
-        checkFilePath(path + "/" + getResources().getString(R.string.folder_bakes));
-        checkFilePath(path + "/" + getResources().getString(R.string.folder_deserts));
-        checkFilePath(path + "/" + getResources().getString(R.string.folder_drinks));
+        checkFilePath(dir_first);
+        checkFilePath(dir_second);
+        checkFilePath(dir_salad);
+        checkFilePath(dir_snack);
+        checkFilePath(dir_bake);
+        checkFilePath(dir_desert);
+        checkFilePath(dir_drink);
     }
 
     private boolean checkPermissions(){
