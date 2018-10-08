@@ -30,7 +30,7 @@
             android:title="Десерты" />
         <item
             android:id="@+id/drinks"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_drinks"
             android:title="Напитки" />
 
     </group>
