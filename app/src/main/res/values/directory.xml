@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="folder_root">Android</string>
-    <string name="folder_data">data</string>
-    <string name="folder_main">com.example.devyatin.dishes</string>
-    <string name="folder_path">Dishes</string>
+    <string name="folder_root">Android/data/com.example.devyatin.dishes/Dishes</string>
     <string name="folder_first">first</string>
     <string name="folder_second">second</string>
     <string name="folder_salad">salad</string>

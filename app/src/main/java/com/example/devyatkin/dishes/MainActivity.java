@@ -120,6 +120,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    //re-init file system
     private boolean checkFilePath(String path){
         File file = new File(Environment.getExternalStorageDirectory(), path);
         if (file.exists()){
@@ -139,9 +140,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         String path = getString(R.string.folder_root);
-        path += "/" + getResources().getString(R.string.folder_data);
-        path += "/" + getResources().getString(R.string.folder_main);
-        path += "/" + getResources().getString(R.string.folder_path);
 
         checkFilePath(path + "/" + getResources().getString(R.string.folder_first));
         checkFilePath(path + "/" + getResources().getString(R.string.folder_second));
