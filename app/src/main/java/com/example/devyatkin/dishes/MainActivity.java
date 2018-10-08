@@ -17,15 +17,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -105,28 +111,65 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         TextView text = (TextView)findViewById(R.id.content_header);
+        ListView listDishes = (ListView)findViewById(R.id.dishes_list);
+
         if (id == R.id.first_dishes) {
             // Handle the camera action
-            File[] dir_list = getDirList(dir_first);
-            text.setText("Первые блюда - " + dir_list.length);
+            ArrayList<String> dir_list = getDirList(dir_first);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter(this,
+                    android.R.layout.simple_list_item_1, dir_list);
+            listDishes.setAdapter(adapter);
+
+            text.setText("Первые блюда - " + dir_list.size());
         } else if (id == R.id.second_dishes) {
-            File[] dir_list = getDirList(dir_second);
-            text.setText("Вторые блюда - " + dir_list.length);
+            ArrayList<String> dir_list = getDirList(dir_second);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter(this,
+                    android.R.layout.simple_list_item_1, dir_list);
+            listDishes.setAdapter(adapter);
+
+            text.setText("Вторые блюда - " + dir_list.size());
         } else if (id == R.id.salads) {
-            File[] dir_list = getDirList(dir_salad);
-            text.setText("Салаты - " + dir_list.length);
+            ArrayList<String> dir_list = getDirList(dir_salad);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter(this,
+                    android.R.layout.simple_list_item_1, dir_list);
+            listDishes.setAdapter(adapter);
+
+            text.setText("Салаты - " + dir_list.size());
         } else if (id == R.id.snacks) {
-            File[] dir_list = getDirList(dir_snack);
-            text.setText("Закуски - " + dir_list.length);
+            ArrayList<String> dir_list = getDirList(dir_snack);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter(this,
+                    android.R.layout.simple_list_item_1, dir_list);
+            listDishes.setAdapter(adapter);
+
+            text.setText("Закуски - " + dir_list.size());
         } else if (id == R.id.bakes) {
-            File[] dir_list = getDirList(dir_bake);
-            text.setText("Выпечка - " + dir_list.length);
+            ArrayList<String> dir_list = getDirList(dir_bake);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter(this,
+                    android.R.layout.simple_list_item_1, dir_list);
+            listDishes.setAdapter(adapter);
+
+            text.setText("Выпечка - " + dir_list.size());
         } else if (id == R.id.deserts) {
-            File[] dir_list = getDirList(dir_desert);
-            text.setText("Десерты - " + dir_list.length);
+            ArrayList<String> dir_list = getDirList(dir_desert);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter(this,
+                    android.R.layout.simple_list_item_1, dir_list);
+            listDishes.setAdapter(adapter);
+
+            text.setText("Десерты - " + dir_list.size());
         } else if (id == R.id.drinks) {
-            File[] dir_list = getDirList(dir_drink);
-            text.setText("Напитки - " + dir_list.length);
+            ArrayList<String> dir_list = getDirList(dir_drink);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter(this,
+                    android.R.layout.simple_list_item_1, dir_list);
+            listDishes.setAdapter(adapter);
+
+            text.setText("Напитки - " + dir_list.size());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -135,9 +178,18 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    File[] getDirList(String path){
+    ArrayList<String> getDirList(String path){
+        ArrayList<String> list = new ArrayList<>();
+
         File dir = new File(Environment.getExternalStorageDirectory(), path);
-        return dir.listFiles();
+        File[] dir_List = dir.listFiles();
+
+        for(File f : dir_List) {
+            if (f.isFile())
+                list.add(f.getName());
+        }
+
+        return list;
     }
 
     //re-init file system
