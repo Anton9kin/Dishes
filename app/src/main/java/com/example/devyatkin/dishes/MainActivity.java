@@ -75,9 +75,9 @@ public class MainActivity extends AppCompatActivity
         InitDirectory();
 
         //choose first category of dishes
-        MenuItem menuItem = (MenuItem)navigationView.getMenu().findItem(R.id.first_dishes);
-        menuItem.setChecked(true);
-        onNavigationItemSelected(menuItem);
+        //MenuItem menuItem = (MenuItem)navigationView.getMenu().findItem(R.id.first_dishes);
+        //menuItem.setChecked(true);
+        //onNavigationItemSelected(menuItem);
     }
 
     @Override

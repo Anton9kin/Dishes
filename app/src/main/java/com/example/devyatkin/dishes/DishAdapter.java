@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,23 +29,38 @@ public class DishAdapter extends ArrayAdapter<Dish> {
     }
 
     public View getView(int position, View convertView, ViewGroup parent){
-        View view = inflater.inflate(this.layout, parent, false);
 
-        ImageView dishView = (ImageView)view.findViewById(R.id.dish_image);
-        TextView dishName = (TextView)view.findViewById(R.id.dish_name);
+        ViewHolder viewHolder;
+        if (convertView == null) {
+            convertView = inflater.inflate(this.layout, parent, false);
+            viewHolder = new ViewHolder(convertView);
+            convertView.setTag(viewHolder);
+        }else{
+            viewHolder = (ViewHolder)convertView.getTag();
+        }
 
         Dish dish = dishes.get(position);
 
         File imgFile = new File(dish.getPath());
         if (imgFile.exists()){
             Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-            dishView.setImageBitmap(bitmap);
+            viewHolder.dishView.setImageBitmap(bitmap);
         }
         else
-            dishView.setImageResource(R.drawable.ic_noimage);
+            viewHolder.dishView.setImageResource(R.drawable.ic_noimage);
 
-        dishName.setText(dish.getName());
+        viewHolder.dishName.setText(dish.getName());
 
-        return view;
+        return convertView;
+    }
+
+    private class ViewHolder{
+        final ImageView dishView;
+        final TextView dishName;
+
+        public ViewHolder(View view){
+            dishView = (ImageView)view.findViewById(R.id.dish_image);
+            dishName = (TextView)view.findViewById(R.id.dish_name);
+        }
     }
 }
