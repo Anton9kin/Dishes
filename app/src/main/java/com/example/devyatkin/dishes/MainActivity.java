@@ -2,6 +2,7 @@ package com.example.devyatkin.dishes;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
@@ -122,66 +123,74 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.first_dishes) {
             // Handle the camera action
-            ArrayList<String> dir_list = getDirList(dir_first);
 
-            ArrayAdapter<String> adapter = new ArrayAdapter(this,
-                    android.R.layout.simple_list_item_1, dir_list);
-            listDishes.setAdapter(adapter);
+            List<Dish> dishes = getDishList(dir_first);
+            //create adapter
+            DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
+            listDishes.setAdapter(dishAdapter);
 
-            text.setText("Первые блюда - " + dir_list.size());
+            text.setText("Первые блюда - " + dishes.size());
         } else if (id == R.id.second_dishes) {
-            ArrayList<String> dir_list = getDirList(dir_second);
+            List<Dish> dishes = getDishList(dir_second);
+            //create adapter
+            DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
+            listDishes.setAdapter(dishAdapter);
 
-            ArrayAdapter<String> adapter = new ArrayAdapter(this,
-                    android.R.layout.simple_list_item_1, dir_list);
-            listDishes.setAdapter(adapter);
-
-            text.setText("Вторые блюда - " + dir_list.size());
+            text.setText("Первые блюда - " + dishes.size());
         } else if (id == R.id.salads) {
-            ArrayList<String> dir_list = getDirList(dir_salad);
+            List<Dish> dishes = getDishList(dir_salad);
+            //create adapter
+            DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
+            listDishes.setAdapter(dishAdapter);
 
-            ArrayAdapter<String> adapter = new ArrayAdapter(this,
-                    android.R.layout.simple_list_item_1, dir_list);
-            listDishes.setAdapter(adapter);
-
-            text.setText("Салаты - " + dir_list.size());
+            text.setText("Первые блюда - " + dishes.size());
         } else if (id == R.id.snacks) {
-            ArrayList<String> dir_list = getDirList(dir_snack);
+            List<Dish> dishes = getDishList(dir_snack);
+            //create adapter
+            DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
+            listDishes.setAdapter(dishAdapter);
 
-            ArrayAdapter<String> adapter = new ArrayAdapter(this,
-                    android.R.layout.simple_list_item_1, dir_list);
-            listDishes.setAdapter(adapter);
-
-            text.setText("Закуски - " + dir_list.size());
+            text.setText("Первые блюда - " + dishes.size());
         } else if (id == R.id.bakes) {
-            ArrayList<String> dir_list = getDirList(dir_bake);
+            List<Dish> dishes = getDishList(dir_bake);
+            //create adapter
+            DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
+            listDishes.setAdapter(dishAdapter);
 
-            ArrayAdapter<String> adapter = new ArrayAdapter(this,
-                    android.R.layout.simple_list_item_1, dir_list);
-            listDishes.setAdapter(adapter);
-
-            text.setText("Выпечка - " + dir_list.size());
+            text.setText("Первые блюда - " + dishes.size());
         } else if (id == R.id.deserts) {
-            ArrayList<String> dir_list = getDirList(dir_desert);
+            List<Dish> dishes = getDishList(dir_desert);
+            //create adapter
+            DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
+            listDishes.setAdapter(dishAdapter);
 
-            ArrayAdapter<String> adapter = new ArrayAdapter(this,
-                    android.R.layout.simple_list_item_1, dir_list);
-            listDishes.setAdapter(adapter);
-
-            text.setText("Десерты - " + dir_list.size());
+            text.setText("Первые блюда - " + dishes.size());
         } else if (id == R.id.drinks) {
-            ArrayList<String> dir_list = getDirList(dir_drink);
+            List<Dish> dishes = getDishList(dir_drink);
+            //create adapter
+            DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
+            listDishes.setAdapter(dishAdapter);
 
-            ArrayAdapter<String> adapter = new ArrayAdapter(this,
-                    android.R.layout.simple_list_item_1, dir_list);
-            listDishes.setAdapter(adapter);
-
-            text.setText("Напитки - " + dir_list.size());
+            text.setText("Первые блюда - " + dishes.size());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private List<Dish> getDishList(String dir) {
+
+        List<Dish> dishList = new ArrayList<>();
+
+        List<String> dir_list = getDirList(dir);
+
+        for (String name : dir_list){
+            //neccessary get info about dish: name, list of ingridient, cooking, source of image
+            Dish dish = new Dish(name, "Soup", "List", "Cook", "/sdcard/image.jpg");
+            dishList.add(dish);
+        }
+        return dishList;
     }
 
 
