@@ -70,7 +70,13 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //check and create(if it's necessary) file system for application
         InitDirectory();
+
+        //choose first category of dishes
+        MenuItem menuItem = (MenuItem)navigationView.getMenu().findItem(R.id.first_dishes);
+        menuItem.setChecked(true);
+        onNavigationItemSelected(menuItem);
     }
 
     @Override
@@ -99,6 +105,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast.makeText(this, "Данная настройка недоступна", Toast.LENGTH_LONG).show();
             return true;
         }
 
@@ -220,13 +227,22 @@ public class MainActivity extends AppCompatActivity
         dir_desert = path + "/" + getResources().getString(R.string.folder_deserts);
         dir_drink = path + "/" + getResources().getString(R.string.folder_drinks);
 
+        String path_images = "/" + getResources().getString(R.string.folder_image);
+
         checkFilePath(dir_first);
+        checkFilePath(dir_first + path_images);
         checkFilePath(dir_second);
+        checkFilePath(dir_second + path_images);
         checkFilePath(dir_salad);
+        checkFilePath(dir_salad + path_images);
         checkFilePath(dir_snack);
+        checkFilePath(dir_snack + path_images);
         checkFilePath(dir_bake);
+        checkFilePath(dir_bake + path_images);
         checkFilePath(dir_desert);
+        checkFilePath(dir_desert + path_images);
         checkFilePath(dir_drink);
+        checkFilePath(dir_drink + path_images);
     }
 
     private boolean checkPermissions(){

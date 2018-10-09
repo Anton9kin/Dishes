@@ -8,5 +8,6 @@
     <string name="folder_bakes">bakes</string>
     <string name="folder_deserts">deserts</string>
     <string name="folder_drinks">drinks</string>
+    <string name="folder_image">images</string>
 
 </resources>
