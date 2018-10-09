@@ -15,50 +15,48 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.List;
 
-public class DishAdapter extends ArrayAdapter<Dish> {
+public class DishAdapter extends RecyclerView.Adapter<DishAdapter.ViewHolder> {
 
     private LayoutInflater inflater;
-    private int layout;
     private List<Dish> dishes;
 
-    public DishAdapter(Context context, int resource, List<Dish> dishes){
-        super(context, resource, dishes);
+    DishAdapter(Context context, List<Dish> dishes){
         this.dishes = dishes;
-        this.layout = resource;
         this.inflater = LayoutInflater.from(context);
     }
 
-    public View getView(int position, View convertView, ViewGroup parent){
+    @Override
+    public DishAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+        View view = inflater.inflate(R.layout.list_dish, parent, false);
+        return new ViewHolder(view);
+    }
 
-        ViewHolder viewHolder;
-        if (convertView == null) {
-            convertView = inflater.inflate(this.layout, parent, false);
-            viewHolder = new ViewHolder(convertView);
-            convertView.setTag(viewHolder);
-        }else{
-            viewHolder = (ViewHolder)convertView.getTag();
-        }
-
+    @Override
+    public void onBindViewHolder(DishAdapter.ViewHolder holder, int position){
         Dish dish = dishes.get(position);
 
         File imgFile = new File(dish.getPath());
         if (imgFile.exists()){
             Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-            viewHolder.dishView.setImageBitmap(bitmap);
+            holder.dishView.setImageBitmap(bitmap);
         }
         else
-            viewHolder.dishView.setImageResource(R.drawable.ic_noimage);
+            holder.dishView.setImageResource(R.drawable.ic_noimage);
 
-        viewHolder.dishName.setText(dish.getName());
-
-        return convertView;
+        holder.dishName.setText(dish.getName());
     }
 
-    private class ViewHolder{
+    @Override
+    public int getItemCount(){
+        return dishes.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
         final ImageView dishView;
         final TextView dishName;
 
-        public ViewHolder(View view){
+        ViewHolder(View view){
+            super(view);
             dishView = (ImageView)view.findViewById(R.id.dish_image);
             dishName = (TextView)view.findViewById(R.id.dish_name);
         }
