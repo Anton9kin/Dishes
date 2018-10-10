@@ -6,4 +6,6 @@
     <string name="nav_header_subtitle">Надины рецепты</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Настройки</string>
+    <string name="default_name_dish">Название блюда</string>
+    <string name="default_image_dish">Изображение блюда</string>
 </resources>

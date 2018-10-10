@@ -127,14 +127,14 @@ public class MainActivity extends AppCompatActivity
             {
                 // получаем выбранный пункт
                 Dish dish = (Dish)parent.getItemAtPosition(position);
-                //Toast.makeText(getApplicationContext(), "Был выбран пункт " + selectedState.getName(),
-                //        Toast.LENGTH_SHORT).show();
-                String message = "Выбран " + dish.getName() + "/n";
-                message += dish.getType() + "/n";
-                message += dish.getIngridient() + "/n";
-                message += dish.getCooking() + "/n";
-                Snackbar.make(v, message, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                String message = "Выбран " + dish.getName() + "\n";
+                message += dish.getType() + "\n";
+                message += dish.getIngridient() + "\n";
+                message += dish.getCooking() + "\n";
+                //Snackbar.make(v, message, Snackbar.LENGTH_LONG)
+                //        .setAction("Action", null).show();
+                Toast.makeText(getApplicationContext(), message,
+                        Toast.LENGTH_LONG).show();
             }
         });
     }
