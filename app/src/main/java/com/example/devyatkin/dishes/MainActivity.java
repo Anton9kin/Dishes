@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.w3c.dom.Text;
+import org.xmlpull.v1.XmlPullParser;
 
 import java.io.File;
 import java.lang.reflect.Array;
@@ -34,6 +35,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.XMLFormatter;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -181,26 +183,33 @@ public class MainActivity extends AppCompatActivity
 
         List<Dish> dishList = new ArrayList<>();
 
-        List<String> dir_list = getDirList(dir);
+        List<File> dir_list = getDirList(dir);
 
-        for (String name : dir_list){
+        for (File file : dir_list){
             //neccessary get info about dish: name, list of ingridient, cooking, source of image
-            Dish dish = new Dish(name, "Soup", "List", "Cook", "/sdcard/image.jpg");
-            dishList.add(dish);
+
+            DishParser parser = new DishParser();
+
+            if (file != null && parser.parse(file)){
+                Dish dish = parser.getDish();
+                File curDir = new File(Environment.getExternalStorageDirectory(), dir);
+                dish.setPath(curDir.getAbsolutePath() + "/" + getResources().getString(R.string.folder_image) + "/" + dish.getName() + ".jpg");
+                dishList.add(dish);
+            }
         }
         return dishList;
     }
 
 
-    ArrayList<String> getDirList(String path){
-        ArrayList<String> list = new ArrayList<>();
+    ArrayList<File> getDirList(String path){
+        ArrayList<File> list = new ArrayList<>();
 
         File dir = new File(Environment.getExternalStorageDirectory(), path);
         File[] dir_List = dir.listFiles();
 
         for(File f : dir_List) {
             if (f.isFile())
-                list.add(f.getName());
+                list.add(f);
         }
 
         return list;

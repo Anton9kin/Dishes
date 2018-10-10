@@ -9,12 +9,12 @@ public class Dish {
     private String cooking;
     private String path;
 
-    public Dish(String name, String type, String ingridient, String cooking, String path){
-        this.name = name;
-        this.type = type;
-        this.ingridient = ingridient;
-        this.cooking = cooking;
-        this.path = path;
+    public Dish(){
+        this.name = "";
+        this.type = "";
+        this.ingridient = "";
+        this.cooking = "";
+        this.path = "";
     }
 
     public String getName(){
