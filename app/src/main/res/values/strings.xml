@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Блюда</string>
+    <string name="app_name">Рецепты</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Категории блюд</string>
@@ -8,4 +8,5 @@
     <string name="action_settings">Настройки</string>
     <string name="default_name_dish">Название блюда</string>
     <string name="default_image_dish">Изображение блюда</string>
+    <string name="choose_category">Выберите категорию блюд из меню слева</string>
 </resources>

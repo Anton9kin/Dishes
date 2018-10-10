@@ -14,10 +14,10 @@
         android:orientation="vertical">
 
         <TextView android:id="@+id/content_header"
-            android:textSize="22dp"
+            android:textSize="20sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Выберите категорию блюд из меню слева"/>
+            android:text="@string/choose_category"/>
 
         <ListView android:id="@+id/dishes_list"
             android:layout_width="match_parent"
