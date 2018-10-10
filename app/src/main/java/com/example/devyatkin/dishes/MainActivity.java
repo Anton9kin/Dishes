@@ -19,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -45,6 +46,9 @@ public class MainActivity extends AppCompatActivity
     private String dir_bake;
     private String dir_desert;
     private String dir_drink;
+    private TextView text;
+    private ListView listDishes;
+    private DishAdapter dishAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +82,11 @@ public class MainActivity extends AppCompatActivity
         //MenuItem menuItem = (MenuItem)navigationView.getMenu().findItem(R.id.first_dishes);
         //menuItem.setChecked(true);
         //onNavigationItemSelected(menuItem);
+
+        //get content header and dishesList
+        text = (TextView)findViewById(R.id.content_header);
+        listDishes = (ListView)findViewById(R.id.dishes_list);
+
     }
 
     @Override
@@ -113,65 +122,54 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    private void createDishesList(String path){
+        List<Dish> dishes = getDishList(path);
+        //create adapter
+        dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
+        listDishes.setAdapter(dishAdapter);
+
+        // слушатель выбора в списке
+        listDishes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+            {
+                // получаем выбранный пункт
+                Dish selectedState = (Dish)parent.getItemAtPosition(position);
+                //Toast.makeText(getApplicationContext(), "Был выбран пункт " + selectedState.getName(),
+                //        Toast.LENGTH_SHORT).show();
+                Snackbar.make(v, "Был выбран пункт " + selectedState.getName(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        TextView text = (TextView)findViewById(R.id.content_header);
-        ListView listDishes = (ListView)findViewById(R.id.dishes_list);
 
         if (id == R.id.first_dishes) {
             // Handle the camera action
-
-            List<Dish> dishes = getDishList(dir_first);
-            //create adapter
-            DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
-            listDishes.setAdapter(dishAdapter);
-
-            text.setText("Первые блюда - " + dishes.size());
+            createDishesList(dir_first);
+            text.setText("Первые блюда");
         } else if (id == R.id.second_dishes) {
-            List<Dish> dishes = getDishList(dir_second);
-            //create adapter
-            DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
-            listDishes.setAdapter(dishAdapter);
-
-            text.setText("Первые блюда - " + dishes.size());
+            createDishesList(dir_second);
+            text.setText("Вторые блюда");
         } else if (id == R.id.salads) {
-            List<Dish> dishes = getDishList(dir_salad);
-            //create adapter
-            DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
-            listDishes.setAdapter(dishAdapter);
-
-            text.setText("Первые блюда - " + dishes.size());
+            createDishesList(dir_salad);
+            text.setText("Салаты");
         } else if (id == R.id.snacks) {
-            List<Dish> dishes = getDishList(dir_snack);
-            //create adapter
-            DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
-            listDishes.setAdapter(dishAdapter);
-
-            text.setText("Первые блюда - " + dishes.size());
+            createDishesList(dir_snack);
+            text.setText("Закуски");
         } else if (id == R.id.bakes) {
-            List<Dish> dishes = getDishList(dir_bake);
-            //create adapter
-            DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
-            listDishes.setAdapter(dishAdapter);
-
-            text.setText("Первые блюда - " + dishes.size());
+            createDishesList(dir_bake);
+            text.setText("Выпечка");
         } else if (id == R.id.deserts) {
-            List<Dish> dishes = getDishList(dir_desert);
-            //create adapter
-            DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
-            listDishes.setAdapter(dishAdapter);
-
-            text.setText("Первые блюда - " + dishes.size());
+            createDishesList(dir_desert);
+            text.setText("Десерты");
         } else if (id == R.id.drinks) {
-            List<Dish> dishes = getDishList(dir_drink);
-            //create adapter
-            DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
-            listDishes.setAdapter(dishAdapter);
-
-            text.setText("Первые блюда - " + dishes.size());
+            createDishesList(dir_drink);
+            text.setText("Напитки");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
