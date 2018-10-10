@@ -2,7 +2,6 @@ package com.example.devyatkin.dishes;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
@@ -18,24 +17,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-import org.xmlpull.v1.XmlPullParser;
-
 import java.io.File;
-import java.lang.reflect.Array;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.XMLFormatter;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -89,6 +78,8 @@ public class MainActivity extends AppCompatActivity
         text = (TextView)findViewById(R.id.content_header);
         listDishes = (ListView)findViewById(R.id.dishes_list);
 
+        //give context to DishesFileSystem
+        DishesFileSystem.setContext(this);
     }
 
     @Override
@@ -135,10 +126,14 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View v, int position, long id)
             {
                 // получаем выбранный пункт
-                Dish selectedState = (Dish)parent.getItemAtPosition(position);
+                Dish dish = (Dish)parent.getItemAtPosition(position);
                 //Toast.makeText(getApplicationContext(), "Был выбран пункт " + selectedState.getName(),
                 //        Toast.LENGTH_SHORT).show();
-                Snackbar.make(v, "Был выбран пункт " + selectedState.getName(), Snackbar.LENGTH_LONG)
+                String message = "Выбран " + dish.getName() + "/n";
+                message += dish.getType() + "/n";
+                message += dish.getIngridient() + "/n";
+                message += dish.getCooking() + "/n";
+                Snackbar.make(v, message, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -183,7 +178,7 @@ public class MainActivity extends AppCompatActivity
 
         List<Dish> dishList = new ArrayList<>();
 
-        List<File> dir_list = getDirList(dir);
+        List<File> dir_list = DishesFileSystem.getDirList(dir);
 
         for (File file : dir_list){
             //neccessary get info about dish: name, list of ingridient, cooking, source of image
@@ -192,8 +187,7 @@ public class MainActivity extends AppCompatActivity
 
             if (file != null && parser.parse(file)){
                 Dish dish = parser.getDish();
-                File curDir = new File(Environment.getExternalStorageDirectory(), dir);
-                dish.setPath(curDir.getAbsolutePath() + "/" + getResources().getString(R.string.folder_image) + "/" + dish.getName() + ".jpg");
+                dish.setPath(DishesFileSystem.getImagePath(dir, dish.getName()));
                 dishList.add(dish);
             }
         }
@@ -201,32 +195,10 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    ArrayList<File> getDirList(String path){
-        ArrayList<File> list = new ArrayList<>();
 
-        File dir = new File(Environment.getExternalStorageDirectory(), path);
-        File[] dir_List = dir.listFiles();
-
-        for(File f : dir_List) {
-            if (f.isFile())
-                list.add(f);
-        }
-
-        return list;
-    }
 
     //re-init file system
-    private boolean checkFilePath(String path){
-        File file = new File(Environment.getExternalStorageDirectory(), path);
-        if (file.exists()){
-            //Toast.makeText(this, "Файл (" + path + ") существует", Toast.LENGTH_LONG).show();
-            return true;
-        }else{
-            //Toast.makeText(this, "Файл (" + path + ") отсутсвует", Toast.LENGTH_LONG).show();
-            file.mkdirs();
-            return false;
-        }
-    }
+
 
     private void InitDirectory(){
         if (!checkPermissions()){
@@ -245,20 +217,21 @@ public class MainActivity extends AppCompatActivity
 
         String path_images = "/" + getResources().getString(R.string.folder_image);
 
-        checkFilePath(dir_first);
-        checkFilePath(dir_first + path_images);
-        checkFilePath(dir_second);
-        checkFilePath(dir_second + path_images);
-        checkFilePath(dir_salad);
-        checkFilePath(dir_salad + path_images);
-        checkFilePath(dir_snack);
-        checkFilePath(dir_snack + path_images);
-        checkFilePath(dir_bake);
-        checkFilePath(dir_bake + path_images);
-        checkFilePath(dir_desert);
-        checkFilePath(dir_desert + path_images);
-        checkFilePath(dir_drink);
-        checkFilePath(dir_drink + path_images);
+        DishesFileSystem.checkFilePath(dir_first);
+
+        DishesFileSystem.checkFilePath(dir_first + path_images);
+        DishesFileSystem.checkFilePath(dir_second);
+        DishesFileSystem.checkFilePath(dir_second + path_images);
+        DishesFileSystem.checkFilePath(dir_salad);
+        DishesFileSystem.checkFilePath(dir_salad + path_images);
+        DishesFileSystem.checkFilePath(dir_snack);
+        DishesFileSystem.checkFilePath(dir_snack + path_images);
+        DishesFileSystem.checkFilePath(dir_bake);
+        DishesFileSystem.checkFilePath(dir_bake + path_images);
+        DishesFileSystem.checkFilePath(dir_desert);
+        DishesFileSystem.checkFilePath(dir_desert + path_images);
+        DishesFileSystem.checkFilePath(dir_drink);
+        DishesFileSystem.checkFilePath(dir_drink + path_images);
     }
 
     private boolean checkPermissions(){
