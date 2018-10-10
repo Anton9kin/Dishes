@@ -9,7 +9,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -120,56 +119,56 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         TextView text = (TextView)findViewById(R.id.content_header);
-        RecyclerView listDishes = (RecyclerView) findViewById(R.id.dishes_list);
+        ListView listDishes = (ListView)findViewById(R.id.dishes_list);
 
         if (id == R.id.first_dishes) {
             // Handle the camera action
 
             List<Dish> dishes = getDishList(dir_first);
             //create adapter
-            DishAdapter dishAdapter = new DishAdapter(this, dishes);
+            DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
             listDishes.setAdapter(dishAdapter);
 
             text.setText("Первые блюда - " + dishes.size());
         } else if (id == R.id.second_dishes) {
             List<Dish> dishes = getDishList(dir_second);
             //create adapter
-            DishAdapter dishAdapter = new DishAdapter(this, dishes);
+            DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
             listDishes.setAdapter(dishAdapter);
 
             text.setText("Первые блюда - " + dishes.size());
         } else if (id == R.id.salads) {
             List<Dish> dishes = getDishList(dir_salad);
             //create adapter
-            DishAdapter dishAdapter = new DishAdapter(this, dishes);
+            DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
             listDishes.setAdapter(dishAdapter);
 
             text.setText("Первые блюда - " + dishes.size());
         } else if (id == R.id.snacks) {
             List<Dish> dishes = getDishList(dir_snack);
             //create adapter
-            DishAdapter dishAdapter = new DishAdapter(this, dishes);
+            DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
             listDishes.setAdapter(dishAdapter);
 
             text.setText("Первые блюда - " + dishes.size());
         } else if (id == R.id.bakes) {
             List<Dish> dishes = getDishList(dir_bake);
             //create adapter
-            DishAdapter dishAdapter = new DishAdapter(this, dishes);
+            DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
             listDishes.setAdapter(dishAdapter);
 
             text.setText("Первые блюда - " + dishes.size());
         } else if (id == R.id.deserts) {
             List<Dish> dishes = getDishList(dir_desert);
             //create adapter
-            DishAdapter dishAdapter = new DishAdapter(this, dishes);
+            DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
             listDishes.setAdapter(dishAdapter);
 
             text.setText("Первые блюда - " + dishes.size());
         } else if (id == R.id.drinks) {
             List<Dish> dishes = getDishList(dir_drink);
             //create adapter
-            DishAdapter dishAdapter = new DishAdapter(this, dishes);
+            DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
             listDishes.setAdapter(dishAdapter);
 
             text.setText("Первые блюда - " + dishes.size());

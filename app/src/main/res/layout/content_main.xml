@@ -19,11 +19,9 @@
             android:layout_height="wrap_content"
             android:text="Выберите категорию блюд из меню слева"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/dishes_list"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        <ListView android:id="@+id/dishes_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"></ListView>
 
     </LinearLayout>
 
