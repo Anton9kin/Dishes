@@ -1,6 +1,7 @@
 package com.example.devyatkin.dishes;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
@@ -29,6 +30,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String SHOW_DISH_CONTENT = "com.example.devyatkin.SHOW_DISH_CONTENT";
     private static final int REQUEST_PERMISSION_WRITE = 1001;
     private String dir_first;
     private String dir_second;
@@ -114,6 +116,17 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+
+    //switch to DishContentActivity
+    private void loadDishContentActivity(Dish dish){
+        //load DishContentActivity
+        Intent intent = new Intent(SHOW_DISH_CONTENT);
+        intent.putExtra("name", dish.getName());
+        intent.putExtra("ingredients", dish.getIngridient());
+        intent.putExtra("cooking", dish.getCooking());
+        startActivity(intent);
+    }
+
     private void createDishesList(String path){
         List<Dish> dishes = getDishList(path);
         //create adapter
@@ -126,6 +139,7 @@ public class MainActivity extends AppCompatActivity
             {
                 // получаем выбранный пункт
                 Dish dish = (Dish)parent.getItemAtPosition(position);
+               /*
                 String message = "Выбран " + dish.getName() + "\n";
                 message += dish.getType() + "\n";
                 message += dish.getIngridient() + "\n";
@@ -134,6 +148,10 @@ public class MainActivity extends AppCompatActivity
                 //        .setAction("Action", null).show();
                 Toast.makeText(getApplicationContext(), message,
                         Toast.LENGTH_LONG).show();
+                */
+
+                //load Activity with content of dish
+                loadDishContentActivity(dish);
             }
         });
     }
