@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -31,14 +32,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String SHOW_DISH_CONTENT = "com.example.devyatkin.SHOW_DISH_CONTENT";
-    private static final int REQUEST_PERMISSION_WRITE = 1001;
-    private String dir_first;
-    private String dir_second;
-    private String dir_salad;
-    private String dir_snack;
-    private String dir_bake;
-    private String dir_desert;
-    private String dir_drink;
+
+
     private TextView text;
     private ListView listDishes;
 
@@ -67,20 +62,15 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //check and create(if it's necessary) file system for application
-        InitDirectory();
-
-        //choose first category of dishes
-        //MenuItem menuItem = (MenuItem)navigationView.getMenu().findItem(R.id.first_dishes);
-        //menuItem.setChecked(true);
-        //onNavigationItemSelected(menuItem);
-
         //get content header and dishesList
         text = findViewById(R.id.content_header);
         listDishes = findViewById(R.id.dishes_list);
 
         //give context to DishesFileSystem
         DishesFileSystem.setContext(this);
+        //check and create(if it's necessary) file system for application
+        DishesFileSystem.InitDirectory();
+
     }
 
     @Override
@@ -125,8 +115,8 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    private void createDishesList(String path){
-        List<Dish> dishes = getDishList(path);
+    private void createDishesList(int menu){
+        List<Dish> dishes = getDishList(menu);
         //create adapter
         DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
         listDishes.setAdapter(dishAdapter);
@@ -137,17 +127,6 @@ public class MainActivity extends AppCompatActivity
             {
                 // получаем выбранный пункт
                 Dish dish = (Dish)parent.getItemAtPosition(position);
-               /*
-                String message = "Выбран " + dish.getName() + "\n";
-                message += dish.getType() + "\n";
-                message += dish.getIngridient() + "\n";
-                message += dish.getCooking() + "\n";
-                //Snackbar.make(v, message, Snackbar.LENGTH_LONG)
-                //        .setAction("Action", null).show();
-                Toast.makeText(getApplicationContext(), message,
-                        Toast.LENGTH_LONG).show();
-                */
-
                 //load Activity with content of dish
                 loadDishContentActivity(dish);
             }
@@ -158,52 +137,44 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-
         int id = item.getItemId();
 
-        if (id == R.id.first_dishes) {
-            // Handle the camera action
-            createDishesList(dir_first);
-            text.setText("Первые блюда");
-        } else if (id == R.id.second_dishes) {
-            createDishesList(dir_second);
-            text.setText("Вторые блюда");
-        } else if (id == R.id.salads) {
-            createDishesList(dir_salad);
-            text.setText("Салаты");
-        } else if (id == R.id.snacks) {
-            createDishesList(dir_snack);
-            text.setText("Закуски");
-        } else if (id == R.id.bakes) {
-            createDishesList(dir_bake);
-            text.setText("Выпечка");
-        } else if (id == R.id.deserts) {
-            createDishesList(dir_desert);
-            text.setText("Десерты");
-        } else if (id == R.id.drinks) {
-            createDishesList(dir_drink);
-            text.setText("Напитки");
+        switch(id){
+            case R.id.first_dishes: text.setText("Первые блюда"); break;
+            case R.id.second_dishes: text.setText("Вторые блюда"); break;
+            case R.id.salads: text.setText("Салаты"); break;
+            case R.id.snacks: text.setText("Закуски"); break;
+            case R.id.bakes: text.setText("Выпечка"); break;
+            case R.id.deserts: text.setText("Десерты"); break;
+            case R.id.drinks: text.setText("Напитки"); break;
+
+            default:
+                id = R.id.first_dishes;
+                text.setText("Первые блюда");
+                break;
+
         }
+
+        createDishesList(id);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    private List<Dish> getDishList(String dir) {
+    private List<Dish> getDishList(int menu) {
 
         List<Dish> dishList = new ArrayList<>();
 
-        List<File> dir_list = DishesFileSystem.getDirList(dir);
+        List<File> dir_list = DishesFileSystem.getDirList(menu);
 
         for (File file : dir_list){
             //neccessary get info about dish: name, list of ingridient, cooking, source of image
-
             DishParser parser = new DishParser();
 
             if (file != null && parser.parse(file)){
                 Dish dish = parser.getDish();
-                dish.setImagePath(DishesFileSystem.getImagePath(dir, dish.getName()));
+                dish.setImagePath(DishesFileSystem.getImagePath(menu, dish.getName()));
                 dishList.add(dish);
             }
         }
@@ -211,68 +182,4 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
-
-    //re-init file system
-
-
-    private void InitDirectory(){
-        if (!checkPermissions()){
-            Toast.makeText(this, "Нет разрешения", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String path = getString(R.string.folder_root);
-        dir_first = path + "/" + getResources().getString(R.string.folder_first);
-        dir_second = path + "/" + getResources().getString(R.string.folder_second);
-        dir_salad = path + "/" + getResources().getString(R.string.folder_salad);
-        dir_snack = path + "/" + getResources().getString(R.string.folder_snacks);
-        dir_bake = path + "/" + getResources().getString(R.string.folder_bakes);
-        dir_desert = path + "/" + getResources().getString(R.string.folder_deserts);
-        dir_drink = path + "/" + getResources().getString(R.string.folder_drinks);
-
-        String path_images = "/" + getResources().getString(R.string.folder_image);
-
-        DishesFileSystem.checkFilePath(dir_first);
-
-        DishesFileSystem.checkFilePath(dir_first + path_images);
-        DishesFileSystem.checkFilePath(dir_second);
-        DishesFileSystem.checkFilePath(dir_second + path_images);
-        DishesFileSystem.checkFilePath(dir_salad);
-        DishesFileSystem.checkFilePath(dir_salad + path_images);
-        DishesFileSystem.checkFilePath(dir_snack);
-        DishesFileSystem.checkFilePath(dir_snack + path_images);
-        DishesFileSystem.checkFilePath(dir_bake);
-        DishesFileSystem.checkFilePath(dir_bake + path_images);
-        DishesFileSystem.checkFilePath(dir_desert);
-        DishesFileSystem.checkFilePath(dir_desert + path_images);
-        DishesFileSystem.checkFilePath(dir_drink);
-        DishesFileSystem.checkFilePath(dir_drink + path_images);
-    }
-
-    private boolean checkPermissions(){
-
-        if(!isExternalStorageReadable() || !isExternalStorageWriteable()){
-            Toast.makeText(this, "Внешнее хранилище не доступно", Toast.LENGTH_LONG).show();
-            return false;
-        }
-        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if(permissionCheck!= PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_PERMISSION_WRITE);
-            return false;
-        }
-        return true;
-    }
-
-    // проверяем, доступно ли внешнее хранилище для чтения и записи
-    public boolean isExternalStorageWriteable(){
-        String state = Environment.getExternalStorageState();
-        return  Environment.MEDIA_MOUNTED.equals(state);
-    }
-    // проверяем, доступно ли внешнее хранилище хотя бы только для чтения
-    public boolean isExternalStorageReadable(){
-        String state = Environment.getExternalStorageState();
-        return  (Environment.MEDIA_MOUNTED.equals(state) ||
-                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state));
-    }
 }
