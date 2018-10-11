@@ -22,7 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DishContentActivity">
+        <activity
+            android:name=".DishContentActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="com.example.devyatkin.SHOW_DISH_CONTENT"/>
                 <category android:name="android.intent.category.DEFAULT"/>

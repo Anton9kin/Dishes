@@ -22,6 +22,8 @@ public class DishContentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dish_content);
+        Toolbar contentDishToolbar = findViewById(R.id.content_dish_toolbar);
+        setSupportActionBar(contentDishToolbar);
 
         Bundle arg = getIntent().getExtras();
         final Dish dish;
@@ -48,5 +50,12 @@ public class DishContentActivity extends AppCompatActivity {
             else
                 image.setImageResource(R.drawable.ic_noimage);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 }
