@@ -121,9 +121,7 @@ public class MainActivity extends AppCompatActivity
     private void loadDishContentActivity(Dish dish){
         //load DishContentActivity
         Intent intent = new Intent(SHOW_DISH_CONTENT);
-        intent.putExtra("name", dish.getName());
-        intent.putExtra("ingredients", dish.getIngridient());
-        intent.putExtra("cooking", dish.getCooking());
+        intent.putExtra(Dish.class.getSimpleName(), dish);
         startActivity(intent);
     }
 
@@ -205,7 +203,7 @@ public class MainActivity extends AppCompatActivity
 
             if (file != null && parser.parse(file)){
                 Dish dish = parser.getDish();
-                dish.setPath(DishesFileSystem.getImagePath(dir, dish.getName()));
+                dish.setImagePath(DishesFileSystem.getImagePath(dir, dish.getName()));
                 dishList.add(dish);
             }
         }

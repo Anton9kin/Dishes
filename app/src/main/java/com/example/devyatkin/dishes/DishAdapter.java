@@ -3,8 +3,6 @@ package com.example.devyatkin.dishes;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Environment;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +39,7 @@ public class DishAdapter extends ArrayAdapter<Dish> {
 
         Dish dish = dishes.get(position);
 
-        File imgFile = new File(dish.getPath());
+        File imgFile = new File(dish.getImagePath());
         if (imgFile.exists()){
             Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             viewHolder.dishView.setImageBitmap(bitmap);

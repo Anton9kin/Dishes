@@ -62,7 +62,7 @@ public class DishParser {
                             }else if ("type".equalsIgnoreCase(tagName)){
                                 dish.setType(textValue);
                             }else if ("ingridient".equalsIgnoreCase(tagName)){
-                                dish.setIngridient(textValue);
+                                dish.setIngredient(textValue);
                             }else if ("cooking".equalsIgnoreCase(tagName)){
                                 dish.setCooking(textValue);
                             }
