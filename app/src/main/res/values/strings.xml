@@ -5,7 +5,13 @@
     <string name="nav_header_title">Категории блюд</string>
     <string name="nav_header_subtitle">Надины рецепты</string>
     <string name="nav_header_desc">Navigation header</string>
+
     <string name="action_settings">Настройки</string>
+    <string name="action_dish_add">Добавить рецепт</string>
+    <string name="action_dish_edit">Редактировать рецепт</string>
+    <string name="action_dish_delete">Удалить рецепт</string>
+
+
     <string name="default_name_dish">Название блюда</string>
     <string name="default_image_dish">Изображение блюда</string>
     <string name="choose_category">Выберите категорию блюд из меню слева</string>

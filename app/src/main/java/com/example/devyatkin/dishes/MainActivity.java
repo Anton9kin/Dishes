@@ -99,7 +99,11 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Toast.makeText(this, "Данная настройка недоступна", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "<" + getResources().getString(R.string.action_settings) + "> не доступно", Toast.LENGTH_LONG).show();
+            return true;
+        }
+        if (id == R.id.action_dish_add) {
+            Toast.makeText(this, "<" + getResources().getString(R.string.action_dish_add) + "> не доступно", Toast.LENGTH_LONG).show();
             return true;
         }
 
