@@ -16,6 +16,8 @@ import java.io.File;
 
 public class DishContentActivity extends AppCompatActivity {
 
+    private Dish dish;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +26,6 @@ public class DishContentActivity extends AppCompatActivity {
         setSupportActionBar(contentDishToolbar);
 
         Bundle arg = getIntent().getExtras();
-        final Dish dish;
 
         if (arg != null){
             dish = arg.getParcelable(Dish.class.getSimpleName());
@@ -71,6 +72,7 @@ public class DishContentActivity extends AppCompatActivity {
         }
         if (id == R.id.action_dish_edit) {
             Intent intent = new Intent(this, DishEdit.class);
+            intent.putExtra(Dish.class.getSimpleName(), dish);
             startActivity(intent);
             //Toast.makeText(this, "<" + getResources().getString(R.string.action_dish_edit) + "> не доступно", Toast.LENGTH_LONG).show();
             return true;

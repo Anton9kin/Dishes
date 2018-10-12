@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity
         }
         if (id == R.id.action_dish_add) {
             Intent intent = new Intent(this, DishEdit.class);
+            intent.putExtra(Dish.class.getSimpleName(), new Dish());
             startActivity(intent);
             //Toast.makeText(this, "<" + getResources().getString(R.string.action_dish_add) + "> не доступно", Toast.LENGTH_LONG).show();
             return true;
