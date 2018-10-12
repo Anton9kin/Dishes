@@ -17,4 +17,11 @@
     <string name="choose_category">Выберите категорию блюд из меню слева</string>
     <string name="content_header_ingredients">Ингридиенты:</string>
     <string name="content_header_cooking">Способ приготовления:</string>
+    <string name="edit_hint_name">Введите название блюда</string>
+
+    <string name="edit_dish_name">Название блюда</string>
+    <string name="edit_dish_type">Категория блюда</string>
+    <string name="edit_dish_ingredients">Ингредиенты</string>
+    <string name="edit_dish_cooking">Приготовление</string>
+    <string name="edit_dish_image">Изображение</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.devyatkin.dishes;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -69,7 +70,9 @@ public class DishContentActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.action_dish_edit) {
-            Toast.makeText(this, "<" + getResources().getString(R.string.action_dish_edit) + "> не доступно", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, DishEdit.class);
+            startActivity(intent);
+            //Toast.makeText(this, "<" + getResources().getString(R.string.action_dish_edit) + "> не доступно", Toast.LENGTH_LONG).show();
             return true;
         }
         if (id == R.id.action_dish_delete) {

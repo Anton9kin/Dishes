@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity
 
     private static final String SHOW_DISH_CONTENT = "com.example.devyatkin.SHOW_DISH_CONTENT";
 
-
     private TextView text;
     private ListView listDishes;
 
@@ -43,15 +42,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -103,7 +93,9 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         if (id == R.id.action_dish_add) {
-            Toast.makeText(this, "<" + getResources().getString(R.string.action_dish_add) + "> не доступно", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, DishEdit.class);
+            startActivity(intent);
+            //Toast.makeText(this, "<" + getResources().getString(R.string.action_dish_add) + "> не доступно", Toast.LENGTH_LONG).show();
             return true;
         }
 
