@@ -6,7 +6,8 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
-    <dimen name="content_dish_name_size">22sp</dimen>
+    <dimen name="content_dish_name_size">24sp</dimen>
     <dimen name="content_dish_ingredients_size">18sp</dimen>
+    <dimen name="content_dish_header_size">22sp</dimen>
     <dimen name="content_dish_cooking_size">20sp</dimen>
 </resources>

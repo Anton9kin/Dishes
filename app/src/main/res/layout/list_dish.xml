@@ -3,29 +3,42 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="10dp">
+    android:orientation="vertical">
     
-    <ImageView
-        android:contentDescription="@string/default_image_dish"
-        android:id="@+id/dish_image"
-        android:layout_width="70dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="16dp"
-        />
-
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
 
-        <TextView
-            android:id="@+id/dish_name"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="start|center"
-            android:text="@string/default_name_dish"
-            android:textSize="20sp" />
+        <ImageView
+            android:contentDescription="@string/default_image_dish"
+            android:id="@+id/dish_image"
+            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="16dp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/dish_name"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="start|center"
+                android:text="@string/default_name_dish"
+                android:textSize="20sp" />
+
+        </LinearLayout>
 
     </LinearLayout>
-
+    
+    <TextView
+        android:background="@color/colorPrimaryAlpha"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+    
 </LinearLayout>
