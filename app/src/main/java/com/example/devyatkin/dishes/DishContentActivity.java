@@ -6,8 +6,10 @@ import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +19,30 @@ import java.io.File;
 public class DishContentActivity extends AppCompatActivity {
 
     private Dish dish;
+
+    private EditText name;
+    private EditText ingredient;
+    private EditText cooking;
+
+
+    private void enableEdit(boolean enable){
+
+        int input_type = InputType.TYPE_NULL;
+        int color = R.color.colorAccentAlpha;
+
+        if (enable){
+            input_type = InputType.TYPE_CLASS_TEXT;
+            color = R.color.colorEdit;
+        }
+        name.setRawInputType(input_type);
+        name.setBackgroundResource(color);
+
+        ingredient.setRawInputType(input_type);
+        ingredient.setBackgroundResource(color);
+
+        cooking.setRawInputType(input_type);
+        cooking.setBackgroundResource(color);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +56,13 @@ public class DishContentActivity extends AppCompatActivity {
         if (arg != null){
             dish = arg.getParcelable(Dish.class.getSimpleName());
 
-            TextView name = findViewById(R.id.content_dish_name);
+            name = findViewById(R.id.content_dish_name);
             name.setText(dish.getName());
 
-            TextView ingredient = findViewById(R.id.content_dish_ingredients);
+            ingredient = findViewById(R.id.content_dish_ingredients);
             ingredient.setText(dish.getIngredient());
 
-            TextView cooking = findViewById(R.id.content_dish_cooking);
+            cooking = findViewById(R.id.content_dish_cooking);
             cooking.setText(dish.getCooking());
 
             ImageView image = findViewById(R.id.content_dish_image);
@@ -48,6 +74,8 @@ public class DishContentActivity extends AppCompatActivity {
             }
             else
                 image.setImageResource(R.drawable.ic_noimage);
+
+            enableEdit(false);
         }
     }
 
@@ -71,9 +99,10 @@ public class DishContentActivity extends AppCompatActivity {
             return true;
         }
         if (id == R.id.action_dish_edit) {
-            Intent intent = new Intent(this, DishEdit.class);
-            intent.putExtra(Dish.class.getSimpleName(), dish);
-            startActivity(intent);
+            enableEdit(true);
+            //Intent intent = new Intent(this, DishEdit.class);
+            //intent.putExtra(Dish.class.getSimpleName(), dish);
+            //startActivity(intent);
             //Toast.makeText(this, "<" + getResources().getString(R.string.action_dish_edit) + "> не доступно", Toast.LENGTH_LONG).show();
             return true;
         }
