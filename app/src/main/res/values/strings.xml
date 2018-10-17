@@ -17,6 +17,11 @@
 
     <string name="default_name_dish">Название блюда</string>
     <string name="default_image_dish">Изображение блюда</string>
+
+    <string name="default_name_category">Название категории</string>
+    <string name="default_image_category">Изображение категории</string>
+
+
     <string name="choose_category">Выберите категорию блюд из меню слева</string>
     <string name="content_header_ingredients">Ингридиенты:</string>
     <string name="content_header_cooking">Способ приготовления:</string>

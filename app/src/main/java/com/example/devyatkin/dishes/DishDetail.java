@@ -1,6 +1,5 @@
 package com.example.devyatkin.dishes;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -11,12 +10,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
 
-public class DishContentActivity extends AppCompatActivity {
+public class DishDetail extends AppCompatActivity {
 
     private Dish dish;
 
@@ -48,7 +46,7 @@ public class DishContentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dish_content);
+        setContentView(R.layout.activity_dish_detail);
         Toolbar contentDishToolbar = findViewById(R.id.content_dish_toolbar);
         setSupportActionBar(contentDishToolbar);
 

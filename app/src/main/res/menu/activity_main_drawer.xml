@@ -5,34 +5,17 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/first_dishes"
+            android:id="@+id/nav_receipt"
             android:icon="@drawable/ic_first_dishes"
-            android:title="Первые блюда" />
+            android:title="@string/nav_receipt" />
         <item
-            android:id="@+id/second_dishes"
+            android:id="@+id/nav_favorites"
             android:icon="@drawable/ic_second_dishes"
-            android:title="Вторые блюда" />
+            android:title="@string/nav_favorites" />
         <item
-            android:id="@+id/salads"
+            android:id="@+id/nav_search"
             android:icon="@drawable/ic_salads"
-            android:title="Салаты" />
-        <item
-            android:id="@+id/snacks"
-            android:icon="@drawable/ic_snacks"
-            android:title="Закуски" />
-        <item
-            android:id="@+id/bakes"
-            android:icon="@drawable/ic_bake"
-            android:title="Выпечка" />
-        <item
-            android:id="@+id/deserts"
-            android:icon="@drawable/ic_deserts"
-            android:title="Десерты" />
-        <item
-            android:id="@+id/drinks"
-            android:icon="@drawable/ic_drinks"
-            android:title="Напитки" />
-
+            android:title="@string/nav_search" />
     </group>
 
 </menu>

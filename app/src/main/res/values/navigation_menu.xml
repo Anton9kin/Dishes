@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nav_receipt">Рецепты</string>
+    <string name="nav_favorites">Избранное</string>
+    <string name="nav_search">Поиск</string>
+
+</resources>

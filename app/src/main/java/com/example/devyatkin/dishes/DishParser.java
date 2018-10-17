@@ -23,6 +23,7 @@ public class DishParser {
         dish = null;
     }
     public DishParser(Context context){
+        dish = null;
         this.context = context;
     }
 
