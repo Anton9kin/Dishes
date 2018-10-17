@@ -33,6 +33,7 @@ public class DishContentActivity extends AppCompatActivity {
         if (enable){
             input_type = InputType.TYPE_CLASS_TEXT;
             color = R.color.colorEdit;
+
         }
         name.setRawInputType(input_type);
         name.setBackgroundResource(color);

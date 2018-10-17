@@ -57,8 +57,8 @@ public class DishAdapter extends ArrayAdapter<Dish> {
         final TextView dishName;
 
         public ViewHolder(View view){
-            dishView = (ImageView)view.findViewById(R.id.dish_image);
-            dishName = (TextView)view.findViewById(R.id.dish_name);
+            dishView = view.findViewById(R.id.dish_image);
+            dishName = view.findViewById(R.id.dish_name);
         }
     }
 }
