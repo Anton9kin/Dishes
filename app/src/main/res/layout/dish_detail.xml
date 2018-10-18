@@ -35,6 +35,14 @@
                 android:adjustViewBounds="true"
                 android:maxHeight="150dp"/>
 
+            <Spinner
+                android:id="@+id/choose_category_dish"
+                style="@style/spinner_style"
+                android:visibility="invisible"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
             <TextView
                 android:text="@string/edit_dish_ingredients"
                 android:layout_width="match_parent"

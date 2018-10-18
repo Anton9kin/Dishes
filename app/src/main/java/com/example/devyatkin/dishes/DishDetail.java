@@ -8,11 +8,18 @@ import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 
 public class DishDetail extends AppCompatActivity {
 
@@ -21,7 +28,9 @@ public class DishDetail extends AppCompatActivity {
     private EditText name;
     private EditText ingredient;
     private EditText cooking;
+    private Spinner type;
 
+    private String[] categories;
 
     private void enableEdit(boolean enable){
 
@@ -31,10 +40,16 @@ public class DishDetail extends AppCompatActivity {
         if (enable){
             input_type = InputType.TYPE_CLASS_TEXT;
             color = R.color.colorEdit;
-
+            type.setVisibility(VISIBLE);
         }
+        else{
+            type.setVisibility(INVISIBLE);
+        }
+
         name.setRawInputType(input_type);
         name.setBackgroundResource(color);
+
+        type.setBackgroundResource(color);
 
         ingredient.setRawInputType(input_type);
         ingredient.setBackgroundResource(color);
@@ -57,6 +72,13 @@ public class DishDetail extends AppCompatActivity {
 
             name = findViewById(R.id.content_dish_name);
             name.setText(dish.getName());
+
+            type = findViewById(R.id.choose_category_dish);
+            categories = getResources().getStringArray(R.array.category_list);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.dish_category_spinner_item, categories);
+            adapter.setDropDownViewResource(R.layout.dish_category_spinner_dropdown_item);
+            type.setAdapter(adapter);
 
             ingredient = findViewById(R.id.content_dish_ingredients);
             ingredient.setText(dish.getIngredient());
