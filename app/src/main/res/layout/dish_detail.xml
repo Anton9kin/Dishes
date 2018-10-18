@@ -20,7 +20,7 @@
 
             <EditText
                 android:id="@+id/content_dish_name"
-                android:hint="Название блюда"
+                android:hint="@string/edit_dish_name"
                 android:textStyle="bold"
                 android:textSize="@dimen/content_dish_name_size"
                 android:layout_width="match_parent"
@@ -36,7 +36,7 @@
                 android:maxHeight="150dp"/>
 
             <TextView
-                android:text="@string/content_header_ingredients"
+                android:text="@string/edit_dish_ingredients"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/content_dish_header_size"
@@ -52,7 +52,7 @@
                 android:layout_height="match_parent" />
 
             <TextView
-                android:text="@string/content_header_cooking"
+                android:text="@string/edit_dish_cooking"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/content_dish_header_size"
@@ -61,7 +61,7 @@
 
             <EditText
                 android:id="@+id/content_dish_cooking"
-                android:hint="Приготовление"
+                android:hint="@string/edit_dish_cooking"
                 android:textSize="@dimen/content_dish_cooking_size"
                 android:layout_weight="2"
                 android:layout_width="match_parent"

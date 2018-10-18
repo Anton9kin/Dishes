@@ -105,7 +105,24 @@ public class MainActivity extends AppCompatActivity
         List<DishCategory> categories  = new ArrayList();
 
         for(String name : categoriesStr){
-            categories.add(new DishCategory(name, R.drawable.ic_noimage));
+            int icon = R.drawable.ic_noimage;
+
+            if (name == categoriesStr[0])
+                icon = R.drawable.ic_first_dishes;
+            else if (name == categoriesStr[1])
+                icon = R.drawable.ic_second_dishes;
+            else if (name == categoriesStr[2])
+                icon = R.drawable.ic_salads;
+            else if (name == categoriesStr[3])
+                icon = R.drawable.ic_snacks;
+            else if (name == categoriesStr[4])
+                icon = R.drawable.ic_deserts;
+            else if (name == categoriesStr[5])
+                icon = R.drawable.ic_bake;
+            else if (name == categoriesStr[6])
+                icon = R.drawable.ic_drinks;
+
+            categories.add(new DishCategory(name, icon));
         }
 
         CategoryAdapter adapter = new CategoryAdapter(this, R.layout.list_category, categories);

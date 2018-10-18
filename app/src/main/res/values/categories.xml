@@ -3,7 +3,6 @@
     <string-array name="category_list">
         <item>Супы</item>
         <item>Основные блюда</item>
-        <item>Завтраки</item>
         <item>Салаты</item>
         <item>Закуски</item>
         <item>Десерты</item>
@@ -14,7 +13,6 @@
     <string-array name="category_list_dir">
         <item>soap</item>
         <item>main_dish</item>
-        <item>breakfast</item>
         <item>salad</item>
         <item>snacks</item>
         <item>deserts</item>
