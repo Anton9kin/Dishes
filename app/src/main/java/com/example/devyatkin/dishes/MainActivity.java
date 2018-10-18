@@ -69,6 +69,84 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        switch(id){
+            case R.id.nav_receipt: createCategoryList(); break;
+            case R.id.nav_favorites: break;
+            case R.id.nav_search:  break;
+        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        this.menu = menu;
+
+        getMenuInflater().inflate(R.menu.edit_dish, menu);
+
+        itemAdd = menu.findItem(R.id.action_dish_add);
+        itemAdd.setVisible(false);
+
+        menu.setGroupVisible(R.id.action_group_editing, false);
+        menu.setGroupVisible(R.id.action_group_saving, false);
+
+        createCategoryList();
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Toast.makeText(this, "<" + getResources().getString(R.string.action_settings) + "> не доступно", Toast.LENGTH_LONG).show();
+            return true;
+        }
+
+        if (id == R.id.action_dish_add){
+            //load Activity with new dish
+            loadDishContentActivity(new Dish());
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private List<Dish> getDishList(int index) {
+
+        List<Dish> dishList = new ArrayList<>();
+
+        List<File> dir_list = DishesFileSystem.getDirList(index);
+
+        for (File file : dir_list){
+            //neccessary get info about dish: name, list of ingridient, cooking, source of image
+            DishParser parser = new DishParser(this);
+
+            if (file != null && parser.parse(file)){
+                Dish dish = parser.getDish();
+                dish.setImagePath(DishesFileSystem.getImagePath(index, dish.getName()));
+                dishList.add(dish);
+            }
+        }
+        return dishList;
+    }
+
+
     //switch to DishDetail
     private void loadDishContentActivity(Dish dish){
         //load DishDetail
@@ -146,78 +224,4 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        switch(id){
-            case R.id.nav_receipt: createCategoryList(); break;
-            case R.id.nav_favorites: break;
-            case R.id.nav_search:  break;
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    private List<Dish> getDishList(int index) {
-
-        List<Dish> dishList = new ArrayList<>();
-
-        List<File> dir_list = DishesFileSystem.getDirList(index);
-
-        for (File file : dir_list){
-            //neccessary get info about dish: name, list of ingridient, cooking, source of image
-            DishParser parser = new DishParser(this);
-
-            if (file != null && parser.parse(file)){
-                Dish dish = parser.getDish();
-                dish.setImagePath(DishesFileSystem.getImagePath(index, dish.getName()));
-                dishList.add(dish);
-            }
-        }
-        return dishList;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        this.menu = menu;
-
-        getMenuInflater().inflate(R.menu.edit_dish, menu);
-
-        itemAdd = menu.findItem(R.id.action_dish_add);
-        itemAdd.setVisible(false);
-
-        menu.setGroupVisible(R.id.action_group_editing, false);
-        menu.setGroupVisible(R.id.action_group_saving, false);
-
-        createCategoryList();
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Toast.makeText(this, "<" + getResources().getString(R.string.action_settings) + "> не доступно", Toast.LENGTH_LONG).show();
-            return true;
-        }
-
-        if (id == R.id.action_dish_add){
-            Toast.makeText(this, "<" + getResources().getString(R.string.action_dish_add) + "> не доступно", Toast.LENGTH_LONG).show();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

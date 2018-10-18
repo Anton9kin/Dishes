@@ -118,6 +118,11 @@ public class DishDetail extends AppCompatActivity {
 
             //TODO: file save
 
+            if (name.getText().toString().isEmpty()){
+                Toast.makeText(this, "Введите название блюда", Toast.LENGTH_LONG).show();
+                return true;
+            }
+
             DishParser parser = new DishParser(this);
             Dish editDish = new Dish();
             editDish.setName(name.getText().toString());
@@ -184,18 +189,5 @@ public class DishDetail extends AppCompatActivity {
 
         cooking.setRawInputType(input_type);
         cooking.setBackgroundResource(color);
-    }
-
-    private int getTypeIndex(String type){
-        int i = 0;
-
-        for (String s : categories){
-            if (s == type)
-                return i;
-
-            i++;
-        }
-
-        return i;
     }
 }
