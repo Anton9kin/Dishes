@@ -108,6 +108,11 @@ public class DishDetail extends AppCompatActivity {
             return true;
         }
         if (id == R.id.action_dish_delete) {
+
+            //TODO: delete file
+
+            DishesFileSystem.deleteFile(dish.getType(), dish.getName());
+            super.onBackPressed();
             Toast.makeText(this, "<" + getResources().getString(R.string.action_dish_delete) + "> не доступно", Toast.LENGTH_LONG).show();
             return true;
         }

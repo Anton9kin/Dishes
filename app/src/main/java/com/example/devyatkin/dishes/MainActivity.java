@@ -52,8 +52,6 @@ public class MainActivity extends AppCompatActivity
         DishesFileSystem.setContext(this);
         //check and create(if it's necessary) file system for application
         DishesFileSystem.InitDirectory();
-
-
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,29 @@ public final class DishesFileSystem {
             file.mkdirs();
             return false;
         }
+    }
+
+    public static boolean deleteFile(String type, String name){
+
+        int index = 0, i = 0;
+
+        String[] categories = context.getResources().getStringArray(R.array.category_list);
+
+        for (String path : categories){
+            if (path == type)
+                index = i;
+
+            i++;
+        }
+
+        File file = new File(Environment.getExternalStorageDirectory(), getPathByMenu(index) + "/" + name + ".xml");
+        file.delete();
+
+        File image = new File(Environment.getExternalStorageDirectory(),
+                getPathByMenu(index) + "/" + context.getResources().getString(R.string.folder_image) + "/" + name + ".jpg");
+        image.delete();
+
+        return true;
     }
 
     public static String getPathByMenu(int index){
