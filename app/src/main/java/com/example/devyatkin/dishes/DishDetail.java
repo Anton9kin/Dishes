@@ -47,6 +47,8 @@ public class DishDetail extends AppCompatActivity {
         Bundle arg = getIntent().getExtras();
 
         if (arg != null){
+            editMode = arg.getBoolean("edit");
+
             dish = arg.getParcelable(Dish.class.getSimpleName());
 
             name = findViewById(R.id.content_dish_name);
@@ -58,6 +60,8 @@ public class DishDetail extends AppCompatActivity {
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.dish_category_spinner_item, categories);
             adapter.setDropDownViewResource(R.layout.dish_category_spinner_dropdown_item);
             type.setAdapter(adapter);
+
+            getSupportActionBar().setTitle(dish.getType());
 
             ingredient = findViewById(R.id.content_dish_ingredients);
             ingredient.setText(dish.getIngredient());
@@ -82,7 +86,7 @@ public class DishDetail extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         this.mainMenu = menu;
         getMenuInflater().inflate(R.menu.edit_dish, menu);
-        enableEdit(false);
+        enableEdit(editMode);
         MenuItem add = menu.findItem(R.id.action_dish_add);
         add.setVisible(false);
         return true;
@@ -113,7 +117,6 @@ public class DishDetail extends AppCompatActivity {
 
             DishesFileSystem.deleteFile(dish.getType(), dish.getName());
             super.onBackPressed();
-            Toast.makeText(this, "<" + getResources().getString(R.string.action_dish_delete) + "> не доступно", Toast.LENGTH_LONG).show();
             return true;
         }
 
@@ -137,6 +140,8 @@ public class DishDetail extends AppCompatActivity {
             editDish.setType(type.getSelectedItem().toString());
 
             parser.save(editDish);
+
+            getSupportActionBar().setTitle(editDish.getType());
 
             Toast.makeText(this, dish.getName() + " успешно сохранено", Toast.LENGTH_LONG).show();
             enableEdit(false);

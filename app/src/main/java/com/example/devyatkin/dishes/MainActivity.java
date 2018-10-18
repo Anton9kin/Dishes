@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity
     private boolean isDishList = false;
     private Menu menu;
     private MenuItem itemAdd;
+    private int currentIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,16 @@ public class MainActivity extends AppCompatActivity
         DishesFileSystem.setContext(this);
         //check and create(if it's necessary) file system for application
         DishesFileSystem.InitDirectory();
+    }
+
+    @Override
+    protected void onResume(){
+
+        if (isDishList){
+            createDishesList(currentIndex);
+        }
+
+        super.onResume();
     }
 
     @Override
@@ -118,7 +129,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.action_dish_add){
             //load Activity with new dish
-            loadDishContentActivity(new Dish());
+            loadDishContentActivity(new Dish(), true);
             return true;
         }
 
@@ -146,10 +157,11 @@ public class MainActivity extends AppCompatActivity
 
 
     //switch to DishDetail
-    private void loadDishContentActivity(Dish dish){
+    private void loadDishContentActivity(Dish dish, boolean edit){
         //load DishDetail
         Intent intent = new Intent(SHOW_DISH_CONTENT);
         intent.putExtra(Dish.class.getSimpleName(), dish);
+        intent.putExtra("edit", edit);
         startActivity(intent);
     }
 
@@ -163,6 +175,9 @@ public class MainActivity extends AppCompatActivity
         DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
         mainList.setAdapter(dishAdapter);
 
+        String[] categories = getResources().getStringArray(R.array.category_list);
+        getSupportActionBar().setTitle(categories[index]);
+
         if (dishes.size() == 0){
             mainList.setOnItemClickListener(null);
         }else{
@@ -173,7 +188,7 @@ public class MainActivity extends AppCompatActivity
                     // получаем выбранный пункт
                     Dish dish = (Dish)parent.getItemAtPosition(position);
                     //load Activity with content of dish
-                    loadDishContentActivity(dish);
+                    loadDishContentActivity(dish, false);
                 }
             });
         }
@@ -182,6 +197,8 @@ public class MainActivity extends AppCompatActivity
     public void createCategoryList(){
         isDishList = false;
         itemAdd.setVisible(false);
+
+        getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
 
         mainList = findViewById(R.id.main_list);
         String[] categoriesStr = getResources().getStringArray(R.array.category_list);
@@ -217,6 +234,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id)
             {
+                currentIndex = position;
                 createDishesList(position);
             }
         });

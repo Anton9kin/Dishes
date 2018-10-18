@@ -49,8 +49,9 @@ public final class DishesFileSystem {
         String[] categories = context.getResources().getStringArray(R.array.category_list);
 
         for (String path : categories){
-            if (path == type)
+            if (type.compareTo(path) == 0) {
                 index = i;
+            }
 
             i++;
         }
