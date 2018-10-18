@@ -5,6 +5,6 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="colorAccentAlpha">#00D81B60</color>
+    <color name="colorAlpha">#00D81B60</color>
     <color name="colorEdit">#80B0B0B0</color>
 </resources>

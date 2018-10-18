@@ -10,10 +10,9 @@
     <string name="action_dish_add">Добавить рецепт</string>
     <string name="action_dish_edit">Редактировать рецепт</string>
     <string name="action_dish_delete">Удалить рецепт</string>
-
-    <string name="action_dish_apply">Сохранить</string>
-    <string name="action_dish_cancel">Отменить</string>
-
+    <string name="action_dish_save">Сохранить</string>
+    <string name="action_dish_saveAs">Сохранить как …</string>
+    <string name="action_dish_cancel">Отменить изменения</string>
 
     <string name="default_name_dish">Название блюда</string>
     <string name="default_image_dish">Изображение блюда</string>

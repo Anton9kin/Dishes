@@ -2,6 +2,7 @@ package com.example.devyatkin.dishes;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity
 
     private ListView mainList;
     private boolean isDishList = false;
+    private Menu menu;
+    private MenuItem itemAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +53,7 @@ public class MainActivity extends AppCompatActivity
         //check and create(if it's necessary) file system for application
         DishesFileSystem.InitDirectory();
 
-        createCategoryList();
+
     }
 
     @Override
@@ -76,6 +80,8 @@ public class MainActivity extends AppCompatActivity
     private void createDishesList(int index){
 
         isDishList = true;
+        itemAdd.setVisible(true);
+
         List<Dish> dishes = getDishList(index);
         //create adapter
         DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
@@ -99,6 +105,8 @@ public class MainActivity extends AppCompatActivity
 
     public void createCategoryList(){
         isDishList = false;
+        itemAdd.setVisible(false);
+
         mainList = findViewById(R.id.main_list);
         String[] categoriesStr = getResources().getStringArray(R.array.category_list);
 
@@ -174,5 +182,42 @@ public class MainActivity extends AppCompatActivity
         return dishList;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        this.menu = menu;
 
+        getMenuInflater().inflate(R.menu.edit_dish, menu);
+
+        itemAdd = menu.findItem(R.id.action_dish_add);
+        itemAdd.setVisible(false);
+
+        menu.setGroupVisible(R.id.action_group_editing, false);
+        menu.setGroupVisible(R.id.action_group_saving, false);
+
+        createCategoryList();
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Toast.makeText(this, "<" + getResources().getString(R.string.action_settings) + "> не доступно", Toast.LENGTH_LONG).show();
+            return true;
+        }
+
+        if (id == R.id.action_dish_add){
+            Toast.makeText(this, "<" + getResources().getString(R.string.action_dish_add) + "> не доступно", Toast.LENGTH_LONG).show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
