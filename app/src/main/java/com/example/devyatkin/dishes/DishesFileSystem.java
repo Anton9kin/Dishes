@@ -7,7 +7,6 @@ import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 

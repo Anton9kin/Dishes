@@ -19,9 +19,6 @@ public class DishParser {
 
 
 
-    public DishParser(){
-        dish = null;
-    }
     public DishParser(Context context){
         dish = null;
         this.context = context;

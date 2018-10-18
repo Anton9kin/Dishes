@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity
 
     private ListView mainList;
     private boolean isDishList = false;
-    private Menu menu;
     private MenuItem itemAdd;
     private int currentIndex = 0;
 
@@ -99,8 +98,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        this.menu = menu;
-
         getMenuInflater().inflate(R.menu.edit_dish, menu);
 
         itemAdd = menu.findItem(R.id.action_dish_add);
