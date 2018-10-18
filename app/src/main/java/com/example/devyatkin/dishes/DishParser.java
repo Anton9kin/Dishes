@@ -31,6 +31,10 @@ public class DishParser {
         return this.dish;
     }
 
+    public void setDish(Dish dish) {
+        this.dish = dish;
+    }
+
     public boolean parse(File xmlFile){
         boolean status = true;
         boolean inEntry = false;
@@ -95,7 +99,7 @@ public class DishParser {
     public boolean save(Dish dish){
         this.dish = dish;
 
-        File newXMLFile = new File(this.dish.getImagePath());
+        File newXMLFile = new File(this.dish.getImagePath() + "/" + dish.getName() + ".xml");
         try {
             newXMLFile.createNewFile();
         } catch (IOException e) {

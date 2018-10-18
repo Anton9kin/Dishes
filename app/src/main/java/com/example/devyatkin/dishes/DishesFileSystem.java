@@ -41,7 +41,7 @@ public final class DishesFileSystem {
         }
     }
 
-    private static String getPathByMenu(int index){
+    public static String getPathByMenu(int index){
         return dirList.get(index);
     }
 

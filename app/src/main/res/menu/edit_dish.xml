@@ -35,11 +35,6 @@
             android:title="@string/action_dish_save"
             app:showAsAction="never" />
         <item
-            android:id="@+id/action_dish_saveAs"
-            android:orderInCategory="71"
-            android:title="@string/action_dish_saveAs"
-            app:showAsAction="never" />
-        <item
             android:id="@+id/action_dish_cancel"
             android:orderInCategory="72"
             android:title="@string/action_dish_cancel"

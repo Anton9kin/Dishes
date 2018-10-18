@@ -2,6 +2,7 @@ package com.example.devyatkin.dishes;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -34,42 +35,7 @@ public class DishDetail extends AppCompatActivity {
 
     private Menu mainMenu;
 
-    private void enableEdit(boolean enable){
 
-        int input_type = InputType.TYPE_NULL;
-        int color = R.color.colorAlpha;
-
-        if (enable){
-            input_type = InputType.TYPE_CLASS_TEXT;
-            color = R.color.colorEdit;
-            type.setVisibility(VISIBLE);
-
-            //show menu with editing
-            mainMenu.setGroupVisible(R.id.action_group_saving, true);
-            //hide menu with adding
-            mainMenu.setGroupVisible(R.id.action_group_editing, false);
-
-        }
-        else{
-            type.setVisibility(INVISIBLE);
-
-            //hide menu with editing
-            mainMenu.setGroupVisible(R.id.action_group_saving, false);
-            //show menu with adding
-            mainMenu.setGroupVisible(R.id.action_group_editing, true);
-        }
-
-        name.setRawInputType(input_type);
-        name.setBackgroundResource(color);
-
-        type.setBackgroundResource(color);
-
-        ingredient.setRawInputType(input_type);
-        ingredient.setBackgroundResource(color);
-
-        cooking.setRawInputType(input_type);
-        cooking.setBackgroundResource(color);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,8 +74,6 @@ public class DishDetail extends AppCompatActivity {
             }
             else
                 image.setImageResource(R.drawable.ic_noimage);
-
-            //enableEdit(false);
         }
     }
 
@@ -154,16 +118,17 @@ public class DishDetail extends AppCompatActivity {
 
             //TODO: file save
 
+            DishParser parser = new DishParser(this);
+            Dish editDish = new Dish();
+            editDish.setName(name.getText().toString());
+            editDish.setIngredient(ingredient.getText().toString());
+            editDish.setCooking(cooking.getText().toString());
+            editDish.setImagePath(Environment.getExternalStorageDirectory() + "/" + DishesFileSystem.getPathByMenu(type.getSelectedItemPosition()));
+            editDish.setType(type.getSelectedItem().toString());
+
+            parser.save(editDish);
+
             Toast.makeText(this, dish.getName() + " успешно сохранено", Toast.LENGTH_LONG).show();
-            enableEdit(false);
-            return true;
-        }
-
-        if (id == R.id.action_dish_saveAs){
-
-            //TODO: file save as
-
-            Toast.makeText(this, dish.getName() + " успешно пересохранено", Toast.LENGTH_LONG).show();
             enableEdit(false);
             return true;
         }
@@ -172,11 +137,65 @@ public class DishDetail extends AppCompatActivity {
 
             //TODO: cancel changes
 
+            name.setText(dish.getName());
+            ingredient.setText(dish.getIngredient());
+            cooking.setText(dish.getCooking());
+
             Toast.makeText(this, "Изменения отменены", Toast.LENGTH_LONG).show();
             enableEdit(false);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void enableEdit(boolean enable){
+
+        int input_type = InputType.TYPE_NULL;
+        int color = R.color.colorAlpha;
+
+        if (enable){
+            input_type = InputType.TYPE_CLASS_TEXT;
+            color = R.color.colorEdit;
+            type.setVisibility(VISIBLE);
+
+            //show menu with editing
+            mainMenu.setGroupVisible(R.id.action_group_saving, true);
+            //hide menu with adding
+            mainMenu.setGroupVisible(R.id.action_group_editing, false);
+
+        }
+        else{
+            type.setVisibility(INVISIBLE);
+
+            //hide menu with editing
+            mainMenu.setGroupVisible(R.id.action_group_saving, false);
+            //show menu with adding
+            mainMenu.setGroupVisible(R.id.action_group_editing, true);
+        }
+
+        name.setRawInputType(input_type);
+        name.setBackgroundResource(color);
+
+        type.setBackgroundResource(color);
+
+        ingredient.setRawInputType(input_type);
+        ingredient.setBackgroundResource(color);
+
+        cooking.setRawInputType(input_type);
+        cooking.setBackgroundResource(color);
+    }
+
+    private int getTypeIndex(String type){
+        int i = 0;
+
+        for (String s : categories){
+            if (s == type)
+                return i;
+
+            i++;
+        }
+
+        return i;
     }
 }
