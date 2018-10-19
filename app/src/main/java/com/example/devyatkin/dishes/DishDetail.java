@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,8 +30,10 @@ public class DishDetail extends AppCompatActivity {
     private EditText ingredient;
     private EditText cooking;
     private Spinner type;
+    private Spinner typeSub;
 
-    private String[] categories;
+    private String[] categories = null;
+    private String[] subCategories = null;
 
     private boolean editMode = false;
 
@@ -54,12 +58,35 @@ public class DishDetail extends AppCompatActivity {
             name = findViewById(R.id.content_dish_name);
             name.setText(dish.getName());
 
+            typeSub = findViewById(R.id.choose_subcategory_dish);
+            subCategories = getResources().getStringArray(R.array.second_subcategory_list);
+
+            ArrayAdapter<String> subAdapter = new ArrayAdapter<String>(this, R.layout.dish_category_spinner_item, subCategories);
+            subAdapter.setDropDownViewResource(R.layout.dish_category_spinner_dropdown_item);
+            typeSub.setAdapter(subAdapter);
+
             type = findViewById(R.id.choose_category_dish);
             categories = getResources().getStringArray(R.array.category_list);
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.dish_category_spinner_item, categories);
             adapter.setDropDownViewResource(R.layout.dish_category_spinner_dropdown_item);
             type.setAdapter(adapter);
+
+            type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position == 1){
+                        typeSub.setVisibility(VISIBLE);
+                    }else{
+                        typeSub.setVisibility(INVISIBLE);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
 
             getSupportActionBar().setTitle(dish.getType());
 
@@ -136,8 +163,15 @@ public class DishDetail extends AppCompatActivity {
             editDish.setName(name.getText().toString());
             editDish.setIngredient(ingredient.getText().toString());
             editDish.setCooking(cooking.getText().toString());
-            editDish.setImagePath(Environment.getExternalStorageDirectory() + "/" + DishesFileSystem.getPathByMenu(type.getSelectedItemPosition()));
-            editDish.setType(type.getSelectedItem().toString());
+
+            if (typeSub.getVisibility() == VISIBLE) {
+                editDish.setType(typeSub.getSelectedItem().toString());
+            }
+            else {
+                editDish.setType(type.getSelectedItem().toString());
+            }
+
+            editDish.setImagePath(Environment.getExternalStorageDirectory() + "/" + DishesFileSystem.getPathByMenu(editDish.getType()));
 
             parser.save(editDish);
 
@@ -182,6 +216,7 @@ public class DishDetail extends AppCompatActivity {
         }
         else{
             type.setVisibility(INVISIBLE);
+            typeSub.setVisibility(INVISIBLE);
 
             //hide menu with editing
             mainMenu.setGroupVisible(R.id.action_group_saving, false);
@@ -193,6 +228,7 @@ public class DishDetail extends AppCompatActivity {
         name.setBackgroundResource(color);
 
         type.setBackgroundResource(color);
+        typeSub.setBackgroundResource(color);
 
         ingredient.setRawInputType(input_type);
         ingredient.setBackgroundResource(color);

@@ -16,6 +16,7 @@ public final class DishesFileSystem {
     private static Context context = null;
 
     private static List<String> dirList =  new ArrayList();
+    private static List<String> menuList = new ArrayList();
 
     private static boolean checkContext(){
         if (context == null)
@@ -43,23 +44,11 @@ public final class DishesFileSystem {
 
     public static boolean deleteFile(String type, String name){
 
-        int index = 0, i = 0;
-
-        String[] categories = context.getResources().getStringArray(R.array.category_list);
-
-        for (String path : categories){
-            if (type.compareTo(path) == 0) {
-                index = i;
-            }
-
-            i++;
-        }
-
-        File file = new File(Environment.getExternalStorageDirectory(), getPathByMenu(index) + "/" + name + ".xml");
+        File file = new File(Environment.getExternalStorageDirectory(), getPathByMenu(type) + "/" + name + ".xml");
         file.delete();
 
         File image = new File(Environment.getExternalStorageDirectory(),
-                getPathByMenu(index) + "/" + context.getResources().getString(R.string.folder_image) + "/" + name + ".jpg");
+                getPathByMenu(type) + "/" + context.getResources().getString(R.string.folder_image) + "/" + name + ".jpg");
         image.delete();
 
         return true;
@@ -69,11 +58,23 @@ public final class DishesFileSystem {
         return dirList.get(index);
     }
 
+    public static String getPathByMenu(String menuItem){
+        int size = menuList.size();
+
+        for (int i = 0; i < size; i++){
+            if (menuItem.compareTo(menuList.get(i)) == 0){
+                return getPathByMenu(i);
+            }
+        }
+
+        return getPathByMenu(0);
+    }
+
     //get file list
-    public static ArrayList<File> getDirList(int index){
+    public static ArrayList<File> getDirList(String category){
         ArrayList<File> list = new ArrayList<>();
 
-        File dir = new File(Environment.getExternalStorageDirectory(), getPathByMenu(index));
+        File dir = new File(Environment.getExternalStorageDirectory(), getPathByMenu(category));
         File[] dir_List = dir.listFiles();
 
         for(File f : dir_List) {
@@ -85,7 +86,7 @@ public final class DishesFileSystem {
     }
 
     //create image path
-    public static String getImagePath(int menu, String name){
+    public static String getImagePath(String menu, String name){
 
         if (!checkContext()){
             return "Context have didn't set";
@@ -100,13 +101,9 @@ public final class DishesFileSystem {
     }
 
 
-    public static void InitDirectory(){
-        if (!checkPermissions()){
-            Toast.makeText(context, "Нет разрешения", Toast.LENGTH_SHORT).show();
-            return;
-        }
+    private static void createPath(int resource){
 
-        String[] directories = context.getResources().getStringArray(R.array.category_list_dir);
+        String[] directories = context.getResources().getStringArray(resource);
         String path = context.getString(R.string.folder_root);
 
         for (String namePath : directories)
@@ -118,6 +115,26 @@ public final class DishesFileSystem {
             DishesFileSystem.checkFilePath(childPath);
             DishesFileSystem.checkFilePath(childPath + path_images);
         }
+    }
+
+    private static void createMenu(int resource){
+        String[] menu = context.getResources().getStringArray(resource);
+        for (String item : menu){
+            menuList.add(item);
+        }
+    }
+
+    public static void InitDirectory(){
+        if (!checkPermissions()){
+            Toast.makeText(context, "Нет разрешения", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        createPath(R.array.category_list_dir);
+        createPath(R.array.second_subcategory_list_dir);
+
+        createMenu(R.array.category_list);
+        createMenu(R.array.second_subcategory_list);
     }
 
 

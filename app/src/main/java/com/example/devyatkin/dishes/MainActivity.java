@@ -27,7 +27,32 @@ public class MainActivity extends AppCompatActivity
     private ListView mainList;
     private boolean isDishList = false;
     private MenuItem itemAdd;
-    private int currentIndex = 0;
+    private String currentCategory;
+    private String[] categoryList;
+    private int lastCategoryList = R.array.category_list;
+    /*
+    this array MUST BE sync with string-array name="category_list" from categories.xml
+     */
+    private int[] sourceIcon_mainCategories = {
+            R.drawable.ic_first_dishes,
+            R.drawable.ic_second_dishes,
+            R.drawable.ic_salads,
+            R.drawable.ic_snacks,
+            R.drawable.ic_deserts,
+            R.drawable.ic_bake,
+            R.drawable.ic_drinks,
+    };
+    /*
+    this array MUST BE sync with string-array name="second_subcategory_list" from categories.xml
+     */
+    private int[] getSourceIcon_secondCategories = {
+            R.drawable.ic_meat,
+            R.drawable.ic_fish,
+            R.drawable.ic_chicken,
+            R.drawable.ic_potato,
+            R.drawable.ic_porridge,
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +83,7 @@ public class MainActivity extends AppCompatActivity
     protected void onResume(){
 
         if (isDishList){
-            createDishesList(currentIndex);
+            createDishesList(currentCategory);
         }
 
         super.onResume();
@@ -71,7 +96,9 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             if (isDishList)
-                createCategoryList();
+                createCategoryList(lastCategoryList);
+            else if (lastCategoryList != R.array.category_list)
+                createCategoryList(R.array.category_list);
             else
                 super.onBackPressed();
         }
@@ -85,7 +112,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         switch(id){
-            case R.id.nav_receipt: createCategoryList(); break;
+            case R.id.nav_receipt: createCategoryList(R.array.category_list); break;
             case R.id.nav_favorites: break;
             case R.id.nav_search:  break;
         }
@@ -106,7 +133,7 @@ public class MainActivity extends AppCompatActivity
         menu.setGroupVisible(R.id.action_group_editing, false);
         menu.setGroupVisible(R.id.action_group_saving, false);
 
-        createCategoryList();
+        createCategoryList(R.array.category_list);
 
         return true;
     }
@@ -133,11 +160,11 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    private List<Dish> getDishList(int index) {
+    private List<Dish> getDishList(String category) {
 
         List<Dish> dishList = new ArrayList<>();
 
-        List<File> dir_list = DishesFileSystem.getDirList(index);
+        List<File> dir_list = DishesFileSystem.getDirList(category);
 
         for (File file : dir_list){
             //neccessary get info about dish: name, list of ingridient, cooking, source of image
@@ -145,7 +172,7 @@ public class MainActivity extends AppCompatActivity
 
             if (file != null && parser.parse(file)){
                 Dish dish = parser.getDish();
-                dish.setImagePath(DishesFileSystem.getImagePath(index, dish.getName()));
+                dish.setImagePath(DishesFileSystem.getImagePath(category, dish.getName()));
                 dishList.add(dish);
             }
         }
@@ -162,18 +189,18 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    private void createDishesList(int index){
+    private void createDishesList(String category){
 
         isDishList = true;
         itemAdd.setVisible(true);
 
-        List<Dish> dishes = getDishList(index);
+        List<Dish> dishes = getDishList(category);
         //create adapter
         DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
         mainList.setAdapter(dishAdapter);
 
         String[] categories = getResources().getStringArray(R.array.category_list);
-        getSupportActionBar().setTitle(categories[index]);
+        getSupportActionBar().setTitle(category);
 
         if (dishes.size() == 0){
             mainList.setOnItemClickListener(null);
@@ -191,39 +218,36 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void createCategoryList(){
-        isDishList = false;
-        itemAdd.setVisible(false);
-
-        getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
-
-        mainList = findViewById(R.id.main_list);
-        String[] categoriesStr = getResources().getStringArray(R.array.category_list);
-
+    private List<DishCategory> getListCategory(int categoryType){
         List<DishCategory> categories  = new ArrayList();
 
-        for(String name : categoriesStr){
-            int icon = R.drawable.ic_noimage;
+        categoryList = getResources().getStringArray(categoryType);
 
-            if (name == categoriesStr[0])
-                icon = R.drawable.ic_first_dishes;
-            else if (name == categoriesStr[1])
-                icon = R.drawable.ic_second_dishes;
-            else if (name == categoriesStr[2])
-                icon = R.drawable.ic_salads;
-            else if (name == categoriesStr[3])
-                icon = R.drawable.ic_snacks;
-            else if (name == categoriesStr[4])
-                icon = R.drawable.ic_deserts;
-            else if (name == categoriesStr[5])
-                icon = R.drawable.ic_bake;
-            else if (name == categoriesStr[6])
-                icon = R.drawable.ic_drinks;
+        int[] icon = sourceIcon_mainCategories;
 
-            categories.add(new DishCategory(name, icon));
+        if (categoryType == R.array.second_subcategory_list)
+            icon = getSourceIcon_secondCategories;
+
+        for(int i = 0; i < categoryList.length; i++){
+            categories.add(new DishCategory(categoryList[i], icon[i]));
         }
 
-        CategoryAdapter adapter = new CategoryAdapter(this, R.layout.list_category, categories);
+        return  categories;
+    }
+
+    public void createCategoryList(final int category){
+        isDishList = false;
+        itemAdd.setVisible(false);
+        lastCategoryList = category;
+
+        if (category == R.array.category_list)
+            getSupportActionBar().setTitle(getResources().getString(R.string.app_name));
+        if (category == R.array.second_subcategory_list)
+            getSupportActionBar().setTitle("Вторые блюда");
+
+        mainList = findViewById(R.id.main_list);
+
+        CategoryAdapter adapter = new CategoryAdapter(this, R.layout.list_category, getListCategory(category));
 
         mainList.setAdapter(adapter);
 
@@ -231,8 +255,14 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int position, long id)
             {
-                currentIndex = position;
-                createDishesList(position);
+                String select = categoryList[position];
+                currentCategory = select;
+
+                if (select.compareTo("Вторые блюда") == 0){
+                    createCategoryList(R.array.second_subcategory_list);
+                    return;
+                }
+                createDishesList(select);
             }
         });
     }
