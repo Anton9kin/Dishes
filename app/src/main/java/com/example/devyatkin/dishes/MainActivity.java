@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity
 
     private static final String SHOW_DISH_CONTENT = "com.example.devyatkin.SHOW_DISH_CONTENT";
 
+    private List<File> dir_list;
     private ListView mainList;
     private boolean isDishList = false;
     private MenuItem itemAdd;
@@ -164,7 +165,7 @@ public class MainActivity extends AppCompatActivity
 
         List<Dish> dishList = new ArrayList<>();
 
-        List<File> dir_list = DishesFileSystem.getDirList(category);
+        dir_list = DishesFileSystem.getDirList(category);
 
         for (File file : dir_list){
             //neccessary get info about dish: name, list of ingridient, cooking, source of image
@@ -172,7 +173,7 @@ public class MainActivity extends AppCompatActivity
 
             if (file != null && parser.parse(file)){
                 Dish dish = parser.getDish();
-                dish.setImagePath(DishesFileSystem.getImagePath(category, dish.getName()));
+                dish.setImagePath(DishesFileSystem.getImagePath(category, file));
                 dishList.add(dish);
             }
         }

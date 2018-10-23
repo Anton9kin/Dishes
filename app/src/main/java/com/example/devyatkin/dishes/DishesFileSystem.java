@@ -100,6 +100,31 @@ public final class DishesFileSystem {
         return imagePath;
     }
 
+    private static String getFolder(File file){
+        int endPos = file.getPath().lastIndexOf('/');
+        String folder = file.getPath().substring(0, endPos);
+        return folder;
+    }
+
+    private static String getName(File file){
+        int endPos = file.getName().lastIndexOf('.');
+        String name = file.getName().substring(0, endPos);
+        return name;
+    }
+
+    public static String getImagePath(String menu, File file){
+        if (!checkContext()){
+            return null;
+        }
+
+        String folder = getFolder(file);
+
+        String imagePath = folder +
+                "/" + context.getResources().getString(R.string.folder_image) +
+                "/" + getName(file) + ".jpg";
+
+        return imagePath;
+    }
 
     private static void createPath(int resource){
 
