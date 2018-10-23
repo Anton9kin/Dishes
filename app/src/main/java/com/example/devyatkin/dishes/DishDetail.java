@@ -24,6 +24,7 @@ import static android.view.View.VISIBLE;
 
 public class DishDetail extends AppCompatActivity {
 
+    private String filePath;
     private Dish dish;
 
     private EditText name;
@@ -53,7 +54,15 @@ public class DishDetail extends AppCompatActivity {
         if (arg != null){
             editMode = arg.getBoolean("edit");
 
-            dish = arg.getParcelable(Dish.class.getSimpleName());
+            filePath = arg.getString("file");
+
+            File file = new File(filePath);
+
+            DishParser parser = new DishParser(this);
+            if (parser.parse(file))
+                dish = parser.getDish();
+
+            //dish = arg.getParcelable(Dish.class.getSimpleName());
 
             name = findViewById(R.id.content_dish_name);
             name.setText(dish.getName());
@@ -97,6 +106,8 @@ public class DishDetail extends AppCompatActivity {
             cooking.setText(dish.getCooking());
 
             ImageView image = findViewById(R.id.content_dish_image);
+
+            dish.setImagePath(DishesFileSystem.getImagePath(dish.getType(), file));
 
             File imgFile = new File(dish.getImagePath());
             if (imgFile.exists()){

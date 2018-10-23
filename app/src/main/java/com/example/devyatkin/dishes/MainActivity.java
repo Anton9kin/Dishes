@@ -189,6 +189,14 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra("edit", edit);
         startActivity(intent);
     }
+    //switch to DishDetail
+    private void loadDishContentActivity(File file, boolean edit){
+        //load DishDetail
+        Intent intent = new Intent(SHOW_DISH_CONTENT);
+        intent.putExtra("file", file.getPath());
+        intent.putExtra("edit", edit);
+        startActivity(intent);
+    }
 
     private void createDishesList(String category){
 
@@ -211,9 +219,12 @@ public class MainActivity extends AppCompatActivity
                 public void onItemClick(AdapterView<?> parent, View v, int position, long id)
                 {
                     // получаем выбранный пункт
-                    Dish dish = (Dish)parent.getItemAtPosition(position);
+                    //Dish dish = (Dish)parent.getItemAtPosition(position);
+                    //get selected file
+                    File file = dir_list.get(position);
                     //load Activity with content of dish
-                    loadDishContentActivity(dish, false);
+                    //loadDishContentActivity(dish, false);
+                    loadDishContentActivity(file, false);
                 }
             });
         }
