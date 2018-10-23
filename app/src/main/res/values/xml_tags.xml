@@ -5,4 +5,6 @@
     <string name="xmlTag_type">type</string>
     <string name="xmlTag_ingredients">ingredient</string>
     <string name="xmlTag_cooking">cooking</string>
+
+    <string name="xmlTag_fav_item">favorite</string>
 </resources>

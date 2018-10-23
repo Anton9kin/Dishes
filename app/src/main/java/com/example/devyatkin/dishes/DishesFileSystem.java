@@ -4,9 +4,19 @@ import android.Manifest;
 import android.content.Context;
 import android.os.Environment;
 import android.support.v4.content.ContextCompat;
+import android.util.Xml;
 import android.widget.Toast;
 
+import org.xmlpull.v1.XmlSerializer;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +50,76 @@ public final class DishesFileSystem {
             file.mkdirs();
             return false;
         }
+    }
+
+    public static List<String> getListFavorites(){
+        File file = new File(Environment.getExternalStorageDirectory() +
+                "/" + context.getResources().getString(R.string.folder_root) +
+                "/" + context.getResources().getString(R.string.folder_favorite));
+
+        FileReader fr;
+
+        List<String> listFav = new ArrayList<>();
+
+        if (!file.exists())
+            return null;
+
+        try {
+            fr = new FileReader(file);
+            BufferedReader reader = new BufferedReader(fr);
+
+            String line;
+            while ((line = reader.readLine()) != null)
+                listFav.add(line);
+
+            reader.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return listFav;
+    }
+
+    public static boolean saveFavorite(String filePath){
+
+        File file = new File(Environment.getExternalStorageDirectory() +
+                "/" + context.getResources().getString(R.string.folder_root) +
+                "/" + context.getResources().getString(R.string.folder_favorite));
+
+        FileWriter fw;
+
+        if (!file.exists()){
+            try {
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }else{
+            List<String> list = getListFavorites();
+            for (String line : list){
+                if (line.compareTo(filePath) == 0)
+                    return true;
+            }
+        }
+
+        try {
+            fw = new FileWriter(file, true);
+            BufferedWriter writer = new BufferedWriter(fw);
+            writer.append(filePath);
+            writer.append("\r\n");
+            writer.flush();
+            writer.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 
     public static boolean deleteFile(String type, String name){

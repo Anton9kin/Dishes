@@ -2,5 +2,6 @@
 <resources>
     <string name="folder_root">Android/data/com.example.devyatkin.dishes/Dishes</string>
     <string name="folder_image">images</string>
+    <string name="folder_favorite">favorites/favorites.dat</string>
 
 </resources>

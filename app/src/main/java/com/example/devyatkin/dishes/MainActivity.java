@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity
     private static final String SHOW_DISH_CONTENT = "com.example.devyatkin.SHOW_DISH_CONTENT";
 
     private List<File> dir_list;
+    private List<String> dir_path = new ArrayList<>();
     private ListView mainList;
     private boolean isDishList = false;
     private MenuItem itemAdd;
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity
 
         switch(id){
             case R.id.nav_receipt: createCategoryList(R.array.category_list); break;
-            case R.id.nav_favorites: break;
+            case R.id.nav_favorites: createDishesList(DishesFileSystem.getListFavorites()); break;
             case R.id.nav_search:  break;
         }
 
@@ -161,13 +162,32 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    private List<Dish> getDishList(List<String> listPath){
+        List<Dish> dishList = new ArrayList<>();
+        dir_path.clear();
+        for(String path : listPath){
+            File file = new File(path);
+            dir_path.add(file.getPath());
+            DishParser parser = new DishParser(this);
+
+            if (file != null && parser.parse(file)){
+                Dish dish = parser.getDish();
+                dish.setImagePath(DishesFileSystem.getImagePath(dish.getType(), file));
+                dishList.add(dish);
+            }
+        }
+        return dishList;
+    }
+
     private List<Dish> getDishList(String category) {
 
         List<Dish> dishList = new ArrayList<>();
 
         dir_list = DishesFileSystem.getDirList(category);
+        dir_path.clear();
 
         for (File file : dir_list){
+            dir_path.add(file.getPath());
             //neccessary get info about dish: name, list of ingridient, cooking, source of image
             DishParser parser = new DishParser(this);
 
@@ -190,12 +210,42 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
     //switch to DishDetail
-    private void loadDishContentActivity(File file, boolean edit){
+    private void loadDishContentActivity(String filePath, boolean edit){
         //load DishDetail
         Intent intent = new Intent(SHOW_DISH_CONTENT);
-        intent.putExtra("file", file.getPath());
+        intent.putExtra("file", filePath);
         intent.putExtra("edit", edit);
         startActivity(intent);
+    }
+
+    private void createDishesList(List<String> listFile){
+        isDishList = true;
+        List<Dish> dishes = getDishList(listFile);
+
+        //create adapter
+        DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
+        mainList.setAdapter(dishAdapter);
+
+        String[] categories = getResources().getStringArray(R.array.category_list);
+        getSupportActionBar().setTitle("Избранное");
+
+        if (dishes.size() == 0){
+            mainList.setOnItemClickListener(null);
+        }else{
+            // слушатель выбора в списке
+            mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+                {
+                    // получаем выбранный пункт
+                    //Dish dish = (Dish)parent.getItemAtPosition(position);
+                    //get selected file
+                    String file = dir_path.get(position);
+                    //load Activity with content of dish
+                    //loadDishContentActivity(dish, false);
+                    loadDishContentActivity(file, false);
+                }
+            });
+        }
     }
 
     private void createDishesList(String category){
@@ -221,7 +271,7 @@ public class MainActivity extends AppCompatActivity
                     // получаем выбранный пункт
                     //Dish dish = (Dish)parent.getItemAtPosition(position);
                     //get selected file
-                    File file = dir_list.get(position);
+                    String file = dir_path.get(position);
                     //load Activity with content of dish
                     //loadDishContentActivity(dish, false);
                     loadDishContentActivity(file, false);

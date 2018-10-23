@@ -23,6 +23,11 @@
             android:orderInCategory="62"
             android:title="@string/action_dish_delete"
             app:showAsAction="never" />
+        <item
+            android:id="@+id/action_dish_favorite"
+            android:orderInCategory="72"
+            android:title="@string/action_dish_favorite"
+            app:showAsAction="never" />
     </group>
 
     <group

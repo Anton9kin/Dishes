@@ -157,6 +157,11 @@ public class DishDetail extends AppCompatActivity {
             super.onBackPressed();
             return true;
         }
+        if (id == R.id.action_dish_favorite){
+            //TODO: add/remove file to/from favorites
+            DishesFileSystem.saveFavorite(filePath);
+            return true;
+        }
 
 
         //group menu with SAVE SAVEAS CANCEL

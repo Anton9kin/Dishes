@@ -13,6 +13,8 @@
     <string name="action_dish_save">Сохранить</string>
     <string name="action_dish_saveAs">Сохранить как …</string>
     <string name="action_dish_cancel">Отменить изменения</string>
+    <string name="action_dish_favorite">Добавить в избранное</string>
+    <string name="action_dish_infavorite">Удалить из избранного</string>
 
     <string name="default_name_dish">Название блюда</string>
     <string name="default_image_dish">Изображение блюда</string>
