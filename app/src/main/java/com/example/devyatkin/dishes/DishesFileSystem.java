@@ -82,8 +82,7 @@ public final class DishesFileSystem {
         return listFav;
     }
 
-    public static boolean saveFavorite(String filePath){
-
+    private static boolean saveFavoriteList(List<String> favList){
         File file = new File(Environment.getExternalStorageDirectory() +
                 "/" + context.getResources().getString(R.string.folder_root) +
                 "/" + context.getResources().getString(R.string.folder_favorite));
@@ -99,18 +98,24 @@ public final class DishesFileSystem {
                 return false;
             }
         }else{
-            List<String> list = getListFavorites();
-            for (String line : list){
-                if (line.compareTo(filePath) == 0)
-                    return true;
+            file.delete();
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
             }
         }
 
         try {
             fw = new FileWriter(file, true);
             BufferedWriter writer = new BufferedWriter(fw);
-            writer.append(filePath);
-            writer.append("\r\n");
+
+            for (String line : favList){
+                writer.append(line);
+                writer.append("\r\n");
+            }
+
             writer.flush();
             writer.close();
 
@@ -121,6 +126,48 @@ public final class DishesFileSystem {
 
         return true;
     }
+
+    public static boolean saveFavorite(String filePath){
+
+        List<String> list = getListFavorites();
+
+        //if list is empty add new record
+        if (list == null){
+            list.add(filePath);
+        }
+
+        //search adding record in list
+        for (String file : list){
+            //if file has already been in list return true
+            if (file.compareTo(filePath) == 0){
+                return  true;
+            }
+        }
+
+        //else add new record to list
+        list.add(filePath);
+        return saveFavoriteList(list);
+    }
+
+    public static boolean removeFavorite(String filePath) {
+
+        List<String> list = getListFavorites();
+
+        if (list == null){
+            return false;
+        }else{
+            int index = 0;
+            for (String line : list){
+                if (line.compareTo(filePath) == 0) {
+                    list.remove(index);
+                }
+                index++;
+            }
+        }
+
+        return saveFavoriteList(list);
+    }
+
 
     public static boolean deleteFile(String type, String name){
 
@@ -270,4 +317,5 @@ public final class DishesFileSystem {
         return  (Environment.MEDIA_MOUNTED.equals(state) ||
                 Environment.MEDIA_MOUNTED_READ_ONLY.equals(state));
     }
+
 }

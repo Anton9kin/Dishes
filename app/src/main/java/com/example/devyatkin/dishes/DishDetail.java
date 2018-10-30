@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.List;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
@@ -39,8 +40,9 @@ public class DishDetail extends AppCompatActivity {
     private boolean editMode = false;
 
     private Menu mainMenu;
+    private MenuItem favItem;
 
-
+    private boolean isFavorite = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,8 +127,21 @@ public class DishDetail extends AppCompatActivity {
         this.mainMenu = menu;
         getMenuInflater().inflate(R.menu.edit_dish, menu);
         enableEdit(editMode);
+
         MenuItem add = menu.findItem(R.id.action_dish_add);
         add.setVisible(false);
+
+        favItem = menu.findItem(R.id.action_dish_favorite);
+
+        //favorite
+        List<String> favoriteList = DishesFileSystem.getListFavorites();
+        for (String fav : favoriteList){
+            if (fav.compareTo(filePath) == 0){
+                favItem.setTitle(R.string.action_dish_infavorite);
+                isFavorite = true;
+            }
+        }
+
         return true;
     }
 
@@ -159,7 +174,16 @@ public class DishDetail extends AppCompatActivity {
         }
         if (id == R.id.action_dish_favorite){
             //TODO: add/remove file to/from favorites
-            DishesFileSystem.saveFavorite(filePath);
+            if (isFavorite == false) {
+                DishesFileSystem.saveFavorite(filePath);
+                isFavorite = true;
+                favItem.setTitle(R.string.action_dish_infavorite);
+            }
+            else {
+                DishesFileSystem.removeFavorite(filePath);
+                isFavorite = false;
+                favItem.setTitle(R.string.action_dish_favorite);
+            }
             return true;
         }
 
