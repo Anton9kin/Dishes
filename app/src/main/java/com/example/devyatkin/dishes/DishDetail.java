@@ -251,6 +251,14 @@ public class DishDetail extends AppCompatActivity {
             ingredient.setText(dish.getIngredient());
             cooking.setText(dish.getCooking());
 
+            File imgFile = new File(dish.getImagePath());
+            if (imgFile.exists()){
+                Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                image.setImageBitmap(bitmap);
+            }
+            else
+                image.setImageResource(R.drawable.ic_noimage);
+
             Toast.makeText(this, "Изменения отменены", Toast.LENGTH_LONG).show();
             enableEdit(false);
             return true;
@@ -313,7 +321,7 @@ public class DishDetail extends AppCompatActivity {
 
     private void showPictureDialog(){
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
-        pictureDialog.setTitle("Select Action");
+        pictureDialog.setTitle("Выберите действие");
 
         pictureDialog.setItems(getResources().getStringArray(R.array.chooseSrcPhoto), new DialogInterface.OnClickListener() {
             @Override
@@ -321,6 +329,7 @@ public class DishDetail extends AppCompatActivity {
                 switch(which){
                     case 0: choosePhotoFromGallery(); break;
                     case 1: takePhotoFromCamera(); break;
+                    case 2: image.setImageResource(R.drawable.ic_noimage); bitmap = null; break;
                 }
             }
         });
@@ -350,7 +359,6 @@ public class DishDetail extends AppCompatActivity {
                 Uri contentUri = data.getData();
                 try{
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentUri);
-                    Toast.makeText(DishDetail.this, "Сохранено", Toast.LENGTH_SHORT).show();
                     image.setImageBitmap(bitmap);
                 } catch (IOException e){
                     e.printStackTrace();
@@ -360,12 +368,20 @@ public class DishDetail extends AppCompatActivity {
         }else if (requestCode == CAMERA){
             bitmap = (Bitmap) data.getExtras().get("data");
             image.setImageBitmap(bitmap);
-            Toast.makeText(DishDetail.this, "Сохранено", Toast.LENGTH_SHORT).show();
         }
     }
 
-    @NonNull
     private String saveImage(Bitmap bm) {
+
+        if (bm == null)
+        {
+            File f = new File(dish.getImagePath());
+            if (f.exists()){
+                f.delete();
+                return "";
+            }
+        }
+
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
 
@@ -373,7 +389,6 @@ public class DishDetail extends AppCompatActivity {
             File f = new File(dish.getImagePath());
             if (f.exists()){
                 f.delete();
-
             }
             f.createNewFile();
 

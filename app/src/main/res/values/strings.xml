@@ -35,7 +35,8 @@
     <string name="edit_dish_image">Изображение</string>
 
     <string-array name="chooseSrcPhoto">
-        <item>Выбрать фото из галерии</item>
+        <item>Выбрать изображение из галерии</item>
         <item>Сделать фото</item>
+        <item>Удалить изображение</item>
     </string-array>
 </resources>
