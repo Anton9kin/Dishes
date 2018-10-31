@@ -1,8 +1,14 @@
 package com.example.devyatkin.dishes;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,7 +24,10 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import static android.view.View.INVISIBLE;
@@ -26,6 +35,8 @@ import static android.view.View.VISIBLE;
 
 public class DishDetail extends AppCompatActivity {
 
+    private static final int CAMERA = 1;
+    private static final int GALLERY = 2;
     private String filePath;
     private Dish dish;
 
@@ -35,6 +46,7 @@ public class DishDetail extends AppCompatActivity {
     private EditText cooking;
     private Spinner type;
     private Spinner typeSub;
+    private Bitmap bitmap;
 
     private String[] categories = null;
     private String[] subCategories = null;
@@ -111,7 +123,7 @@ public class DishDetail extends AppCompatActivity {
 
             image = findViewById(R.id.content_dish_image);
 
-            dish.setImagePath(DishesFileSystem.getImagePath(dish.getType(), file));
+            dish.setImagePath(DishesFileSystem.getImagePath(file));
 
             File imgFile = new File(dish.getImagePath());
             if (imgFile.exists()){
@@ -220,6 +232,7 @@ public class DishDetail extends AppCompatActivity {
             }
 
             editDish.setImagePath(Environment.getExternalStorageDirectory() + "/" + DishesFileSystem.getPathByMenu(editDish.getType()));
+            saveImage(bitmap);
 
             parser.save(editDish);
 
@@ -301,8 +314,79 @@ public class DishDetail extends AppCompatActivity {
     private void showPictureDialog(){
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
         pictureDialog.setTitle("Select Action");
-        String[] pictureDialogItems = {
-                "Select photo from"
-        };
+
+        pictureDialog.setItems(getResources().getStringArray(R.array.chooseSrcPhoto), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch(which){
+                    case 0: choosePhotoFromGallery(); break;
+                    case 1: takePhotoFromCamera(); break;
+                }
+            }
+        });
+
+        pictureDialog.show();
+    }
+
+    private void takePhotoFromCamera() {
+        Intent gallery = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(gallery, CAMERA);
+    }
+
+    private void choosePhotoFromGallery() {
+        Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(gallery, GALLERY);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == this.RESULT_CANCELED)
+            return;
+
+        if (requestCode == GALLERY){
+            if (data != null){
+                Uri contentUri = data.getData();
+                try{
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentUri);
+                    Toast.makeText(DishDetail.this, "Сохранено", Toast.LENGTH_SHORT).show();
+                    image.setImageBitmap(bitmap);
+                } catch (IOException e){
+                    e.printStackTrace();
+                    Toast.makeText(DishDetail.this, "Ошибка!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }else if (requestCode == CAMERA){
+            bitmap = (Bitmap) data.getExtras().get("data");
+            image.setImageBitmap(bitmap);
+            Toast.makeText(DishDetail.this, "Сохранено", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @NonNull
+    private String saveImage(Bitmap bm) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+
+        try{
+            File f = new File(dish.getImagePath());
+            if (f.exists()){
+                f.delete();
+
+            }
+            f.createNewFile();
+
+            FileOutputStream fos = new FileOutputStream(f);
+            fos.write(bytes.toByteArray());
+            MediaScannerConnection.scanFile(this, new String[]{f.getPath()}, new String[]{"image/jpeg"}, null);
+            fos.close();
+
+            return f.getAbsolutePath();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return "";
     }
 }

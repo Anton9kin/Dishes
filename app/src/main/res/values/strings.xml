@@ -33,4 +33,9 @@
     <string name="edit_dish_ingredients">Ингредиенты</string>
     <string name="edit_dish_cooking">Приготовление</string>
     <string name="edit_dish_image">Изображение</string>
+
+    <string-array name="chooseSrcPhoto">
+        <item>Выбрать фото из галерии</item>
+        <item>Сделать фото</item>
+    </string-array>
 </resources>

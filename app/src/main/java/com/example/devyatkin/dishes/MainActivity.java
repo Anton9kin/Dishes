@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity
 
             if (file != null && parser.parse(file)){
                 Dish dish = parser.getDish();
-                dish.setImagePath(DishesFileSystem.getImagePath(dish.getType(), file));
+                dish.setImagePath(DishesFileSystem.getImagePath(file));
                 dishList.add(dish);
             }
         }
@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity
 
             if (file != null && parser.parse(file)){
                 Dish dish = parser.getDish();
-                dish.setImagePath(DishesFileSystem.getImagePath(category, file));
+                dish.setImagePath(DishesFileSystem.getImagePath(file));
                 dishList.add(dish);
             }
         }

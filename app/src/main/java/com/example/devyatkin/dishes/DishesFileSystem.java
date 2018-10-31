@@ -212,21 +212,6 @@ public final class DishesFileSystem {
         return list;
     }
 
-    //create image path
-    public static String getImagePath(String menu, String name){
-
-        if (!checkContext()){
-            return "Context have didn't set";
-        }
-
-        File curDir = new File(Environment.getExternalStorageDirectory(), getPathByMenu(menu));
-        String imagePath = curDir.getAbsolutePath() +
-                "/" + context.getResources().getString(R.string.folder_image) +
-                "/" + name + ".jpg";
-
-        return imagePath;
-    }
-
     private static String getFolder(File file){
         int endPos = file.getPath().lastIndexOf('/');
         String folder = file.getPath().substring(0, endPos);
@@ -239,7 +224,7 @@ public final class DishesFileSystem {
         return name;
     }
 
-    public static String getImagePath(String menu, File file){
+    public static String getImagePath(File file){
         if (!checkContext()){
             return null;
         }
