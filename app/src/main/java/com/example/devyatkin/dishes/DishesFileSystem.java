@@ -131,19 +131,20 @@ public final class DishesFileSystem {
 
         List<String> list = getListFavorites();
 
-        //if list is empty add new record
+        //if list is empty then create new list
         if (list == null){
-            list.add(filePath);
+            list = new ArrayList<>();
         }
-
-        //search adding record in list
-        for (String file : list){
-            //if file has already been in list return true
-            if (file.compareTo(filePath) == 0){
-                return  true;
+        //else find filepath in favorite list
+        else {
+            //search adding record in list
+            for (String file : list) {
+                //if file has already been in list return true
+                if (file.compareTo(filePath) == 0) {
+                    return true;
+                }
             }
         }
-
         //else add new record to list
         list.add(filePath);
         return saveFavoriteList(list);
@@ -152,20 +153,19 @@ public final class DishesFileSystem {
     public static boolean removeFavorite(String filePath) {
 
         List<String> list = getListFavorites();
+        List<String> newList = new ArrayList<>();
 
         if (list == null){
             return false;
         }else{
-            int index = 0;
             for (String line : list){
-                if (line.compareTo(filePath) == 0) {
-                    list.remove(index);
+                if (line.compareTo(filePath) != 0) {
+                    newList.add(line);
                 }
-                index++;
             }
         }
 
-        return saveFavoriteList(list);
+        return saveFavoriteList(newList);
     }
 
 

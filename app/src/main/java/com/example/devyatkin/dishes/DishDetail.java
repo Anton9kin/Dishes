@@ -3,6 +3,7 @@ package com.example.devyatkin.dishes;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -29,6 +30,7 @@ public class DishDetail extends AppCompatActivity {
     private Dish dish;
 
     private EditText name;
+    private ImageView image;
     private EditText ingredient;
     private EditText cooking;
     private Spinner type;
@@ -107,7 +109,7 @@ public class DishDetail extends AppCompatActivity {
             cooking = findViewById(R.id.content_dish_cooking);
             cooking.setText(dish.getCooking());
 
-            ImageView image = findViewById(R.id.content_dish_image);
+            image = findViewById(R.id.content_dish_image);
 
             dish.setImagePath(DishesFileSystem.getImagePath(dish.getType(), file));
 
@@ -135,6 +137,12 @@ public class DishDetail extends AppCompatActivity {
 
         //favorite
         List<String> favoriteList = DishesFileSystem.getListFavorites();
+        if (favoriteList == null) {
+            favItem.setTitle(R.string.action_dish_favorite);
+            isFavorite = false;
+            return true;
+        }
+
         for (String fav : favoriteList){
             if (fav.compareTo(filePath) == 0){
                 favItem.setTitle(R.string.action_dish_infavorite);
@@ -253,6 +261,12 @@ public class DishDetail extends AppCompatActivity {
             //hide menu with adding
             mainMenu.setGroupVisible(R.id.action_group_editing, false);
 
+            image.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    showPictureDialog();
+                }
+            });
         }
         else{
             type.setVisibility(INVISIBLE);
@@ -262,6 +276,12 @@ public class DishDetail extends AppCompatActivity {
             mainMenu.setGroupVisible(R.id.action_group_saving, false);
             //show menu with adding
             mainMenu.setGroupVisible(R.id.action_group_editing, true);
+
+            image.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                }
+            });
         }
 
         name.setRawInputType(input_type);
@@ -275,5 +295,14 @@ public class DishDetail extends AppCompatActivity {
 
         cooking.setRawInputType(input_type);
         cooking.setBackgroundResource(color);
+    }
+
+
+    private void showPictureDialog(){
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
+        pictureDialog.setTitle("Select Action");
+        String[] pictureDialogItems = {
+                "Select photo from"
+        };
     }
 }

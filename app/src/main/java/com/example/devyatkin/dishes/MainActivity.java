@@ -85,7 +85,12 @@ public class MainActivity extends AppCompatActivity
     protected void onResume(){
 
         if (isDishList){
-            createDishesList(currentCategory);
+            if (currentCategory.compareTo(getResources().getString(R.string.nav_favorites)) == 0) {
+                createDishesList(DishesFileSystem.getListFavorites());
+                currentCategory = getResources().getString(R.string.nav_favorites);
+            }
+            else
+                createDishesList(currentCategory);
         }
 
         super.onResume();
@@ -114,8 +119,13 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         switch(id){
-            case R.id.nav_receipt: createCategoryList(R.array.category_list); break;
-            case R.id.nav_favorites: createDishesList(DishesFileSystem.getListFavorites()); break;
+            case R.id.nav_receipt:
+                createCategoryList(R.array.category_list);
+                break;
+            case R.id.nav_favorites:
+                createDishesList(DishesFileSystem.getListFavorites());
+                currentCategory = getResources().getString(R.string.nav_favorites);
+                break;
             case R.id.nav_search:  break;
         }
 
@@ -165,6 +175,10 @@ public class MainActivity extends AppCompatActivity
     private List<Dish> getDishList(List<String> listPath){
         List<Dish> dishList = new ArrayList<>();
         dir_path.clear();
+
+        if (listPath == null)
+            return dishList;
+
         for(String path : listPath){
             File file = new File(path);
             dir_path.add(file.getPath());
