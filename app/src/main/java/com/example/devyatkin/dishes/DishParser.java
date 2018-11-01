@@ -1,6 +1,7 @@
 package com.example.devyatkin.dishes;
 
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 import android.util.Xml;
 
@@ -96,7 +97,7 @@ public class DishParser {
     public boolean save(Dish dish){
         this.dish = dish;
 
-        File newXMLFile = new File(this.dish.getImagePath() + "/" + dish.getName() + ".xml");
+        File newXMLFile = new File(Environment.getExternalStorageDirectory() + "/" + DishesFileSystem.getPathByMenu(dish.getType()) + "/" + dish.getName() + ".xml");
         try {
             newXMLFile.createNewFile();
         } catch (IOException e) {

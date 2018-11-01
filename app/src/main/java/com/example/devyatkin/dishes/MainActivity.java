@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.action_dish_add){
             //load Activity with new dish
-            loadDishContentActivity(new Dish(), true);
+            loadDishContentActivity(new String(), true);
             return true;
         }
 

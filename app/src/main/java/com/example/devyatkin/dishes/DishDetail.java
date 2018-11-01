@@ -39,6 +39,7 @@ public class DishDetail extends AppCompatActivity {
     private static final int GALLERY = 2;
     private String filePath;
     private Dish dish;
+    private Dish editDish;
 
     private EditText name;
     private ImageView image;
@@ -71,14 +72,15 @@ public class DishDetail extends AppCompatActivity {
             editMode = arg.getBoolean("edit");
 
             filePath = arg.getString("file");
-
             File file = new File(filePath);
 
-            DishParser parser = new DishParser(this);
-            if (parser.parse(file))
-                dish = parser.getDish();
-
-            //dish = arg.getParcelable(Dish.class.getSimpleName());
+            if (!filePath.isEmpty()){
+                DishParser parser = new DishParser(this);
+                if (parser.parse(file))
+                    dish = parser.getDish();
+            }else{
+                dish = new Dish();
+            }
 
             name = findViewById(R.id.content_dish_name);
             name.setText(dish.getName());
@@ -123,7 +125,8 @@ public class DishDetail extends AppCompatActivity {
 
             image = findViewById(R.id.content_dish_image);
 
-            dish.setImagePath(DishesFileSystem.getImagePath(file));
+            if (!filePath.isEmpty())
+                dish.setImagePath(DishesFileSystem.getImagePath(file));
 
             File imgFile = new File(dish.getImagePath());
             if (imgFile.exists()){
@@ -235,7 +238,7 @@ public class DishDetail extends AppCompatActivity {
             }
 
             DishParser parser = new DishParser(this);
-            Dish editDish = new Dish();
+            editDish = new Dish();
             editDish.setName(name.getText().toString());
             editDish.setIngredient(ingredient.getText().toString());
             editDish.setCooking(cooking.getText().toString());
@@ -246,15 +249,17 @@ public class DishDetail extends AppCompatActivity {
             else {
                 editDish.setType(type.getSelectedItem().toString());
             }
-
-            editDish.setImagePath(Environment.getExternalStorageDirectory() + "/" + DishesFileSystem.getPathByMenu(editDish.getType()));
+            editDish.setImagePath(Environment.getExternalStorageDirectory() +
+                    "/" + DishesFileSystem.getPathByMenu(editDish.getType()) +
+                    "/" + getResources().getString(R.string.folder_image) +
+                    "/" + editDish.getName() + ".jpg");
             saveImage(bitmap);
 
             parser.save(editDish);
 
             getSupportActionBar().setTitle(editDish.getType());
 
-            Toast.makeText(this, dish.getName() + " успешно сохранено", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, editDish.getName() + " успешно сохранено", Toast.LENGTH_LONG).show();
             enableEdit(false);
             return true;
         }
@@ -389,20 +394,23 @@ public class DishDetail extends AppCompatActivity {
 
     private String saveImage(Bitmap bm) {
 
+        String imagePath = editDish.getImagePath();
+
+
         if (bm == null)
         {
-            File f = new File(dish.getImagePath());
+            File f = new File(imagePath);
             if (f.exists()){
                 f.delete();
-                return "";
             }
+            return "";
         }
 
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
 
         try{
-            File f = new File(dish.getImagePath());
+            File f = new File(imagePath);
             if (f.exists()){
                 f.delete();
             }
