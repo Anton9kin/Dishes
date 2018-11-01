@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="deleteDialog_title">Подтверждение удаления</string>
+    <string name="deleteDialog_message">Удалить?</string>
+    <string name="deleteDialog_OK">Да</string>
+    <string name="deleteDialog_Cancel">Нет</string>
+</resources>

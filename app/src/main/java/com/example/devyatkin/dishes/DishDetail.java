@@ -188,8 +188,24 @@ public class DishDetail extends AppCompatActivity {
 
             //TODO: delete file
 
-            DishesFileSystem.deleteFile(dish.getType(), dish.getName());
-            super.onBackPressed();
+            AlertDialog.Builder deleteDialog = new AlertDialog.Builder(this);
+            deleteDialog.setTitle(R.string.deleteDialog_message);
+            deleteDialog.setMessage(dish.getName());
+            deleteDialog.setPositiveButton(R.string.deleteDialog_OK, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    DishesFileSystem.deleteFile(dish.getType(), dish.getName());
+                    onBackPressed();
+                }
+            });
+            deleteDialog.setNegativeButton(R.string.deleteDialog_Cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+
+            deleteDialog.show();
             return true;
         }
         if (id == R.id.action_dish_favorite){
