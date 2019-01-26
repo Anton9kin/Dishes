@@ -17,6 +17,7 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -65,6 +66,8 @@ public class DishDetail extends AppCompatActivity {
         setContentView(R.layout.activity_dish_detail);
         Toolbar contentDishToolbar = findViewById(R.id.content_dish_toolbar);
         setSupportActionBar(contentDishToolbar);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         Bundle arg = getIntent().getExtras();
 
