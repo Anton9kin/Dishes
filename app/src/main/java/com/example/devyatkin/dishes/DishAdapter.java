@@ -59,6 +59,9 @@ public class DishAdapter extends ArrayAdapter<Dish> {
         public ViewHolder(View view){
             dishView = view.findViewById(R.id.dish_image);
             dishName = view.findViewById(R.id.dish_name);
+
+            dishView.setClipToOutline(true);
+            dishView.setBackgroundResource(R.drawable.rectangle_arround);
         }
     }
 }
