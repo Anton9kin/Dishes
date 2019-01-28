@@ -71,6 +71,11 @@ public class DishDetail extends AppCompatActivity {
         Toolbar contentDishToolbar = findViewById(R.id.content_dish_toolbar);
         setSupportActionBar(contentDishToolbar);
 
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         Bundle arg = getIntent().getExtras();
@@ -317,6 +322,11 @@ public class DishDetail extends AppCompatActivity {
             Toast.makeText(this, "Изменения отменены", Toast.LENGTH_LONG).show();
             enableEdit(false);
             return true;
+        }
+
+
+        if (id == android.R.id.home){
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
