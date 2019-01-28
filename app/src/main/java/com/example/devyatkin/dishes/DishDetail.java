@@ -141,15 +141,14 @@ public class DishDetail extends AppCompatActivity {
                 image.setImageBitmap(bitmap);
                 image.setClipToOutline(true);
                 image.setBackgroundResource(R.drawable.rectangle_arround);
-
-                List<View> listView = new ArrayList<>();
-                listView.add(image);
-                autoLayout(listView);
-
             }
             else
                 image.setImageResource(R.drawable.ic_noimage);
         }
+
+        List<View> listView = new ArrayList<>();
+        listView.add(image);
+        autoLayout(listView);
     }
 
     private void autoLayout(List<View> listView) {
@@ -162,7 +161,7 @@ public class DishDetail extends AppCompatActivity {
 
         //common height is equal 40% from screen width
         int common_height = (int) (size.x * 0.4);
-        int common_width = (int) (size.x * 0.7);
+        int common_width = (int) (size.x * 0.6);
 
         //set common height to all images
         for (View view:
