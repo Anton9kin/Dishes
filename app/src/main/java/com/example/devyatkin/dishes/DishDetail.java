@@ -30,8 +30,11 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -293,6 +296,29 @@ public class DishDetail extends AppCompatActivity {
                     "/" + getResources().getString(R.string.folder_image) +
                     "/" + editDish.getName() + ".jpg");
             saveImage(bitmap);
+
+            if (!filePath.isEmpty()){
+
+                //copy image
+                try {
+                    FileInputStream inStream = new FileInputStream(dish.getImagePath());
+                    FileOutputStream outStream = new FileOutputStream(editDish.getImagePath());
+
+                    FileChannel inChannel = inStream.getChannel();
+                    FileChannel outChannel = outStream.getChannel();
+                    inChannel.transferTo(0, inChannel.size(), outChannel);
+                    inStream.close();
+                    outStream.close();
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                DishesFileSystem.deleteFile(dish.getType(), dish.getName());
+
+            }
 
             parser.save(editDish);
 

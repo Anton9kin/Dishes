@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         switch(id){
-            case R.id.nav_receipt:
+            case R.id.nav_recipe:
                 createCategoryList(R.array.category_list);
                 break;
             case R.id.nav_favorites:
