@@ -202,7 +202,10 @@ public final class DishesFileSystem {
         ArrayList<File> list = new ArrayList<>();
 
         File dir = new File(Environment.getExternalStorageDirectory(), getPathByMenu(category));
+
         File[] dir_List = dir.listFiles();
+        if (dir_List == null)
+            return list;
 
         for(File f : dir_List) {
             if (f.isFile())
