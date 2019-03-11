@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/content_dish_header_size"
                 android:textStyle="bold"
-                android:textColor="@color/colorPrimary"/>
+                android:textColor="@color/colorPrimaryDark"/>
 
             <EditText
                 android:id="@+id/content_dish_ingredients"
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/content_dish_header_size"
                 android:textStyle="bold"
-                android:textColor="@color/colorPrimary"/>
+                android:textColor="@color/colorPrimaryDark"/>
 
             <EditText
                 android:id="@+id/content_dish_cooking"
