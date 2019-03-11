@@ -4,16 +4,11 @@ import android.Manifest;
 import android.content.Context;
 import android.os.Environment;
 import android.support.v4.content.ContextCompat;
-import android.util.Xml;
 import android.widget.Toast;
-
-import org.xmlpull.v1.XmlSerializer;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -28,6 +23,9 @@ public final class DishesFileSystem {
     private static List<String> dirList =  new ArrayList();
     private static List<String> menuList = new ArrayList();
 
+    private static String storage = "";
+    private static String[] storageList;
+
     private static boolean checkContext(){
         if (context == null)
             return false;
@@ -35,13 +33,22 @@ public final class DishesFileSystem {
         return true;
     }
 
-    public static void setContext(Context current){
+    public static void setContext(Context current, String currStorage){
         context = current;
+        storage = currStorage;
+        storageList = context.getResources().getStringArray(R.array.pref_storage_values);
     }
 
     //re-init file system
     public static boolean checkFilePath(String path){
-        File file = new File(Environment.getExternalStorageDirectory(), path);
+
+        File file;
+
+        if (storage.equals(storageList[0]))
+            file = new File(Environment.getExternalStorageDirectory(), path);
+        else {
+            file = new File(Environment.getExternalStorageDirectory(), path);
+        }
         if (file.exists()){
             //Toast.makeText(this, "Файл (" + path + ") существует", Toast.LENGTH_LONG).show();
             return true;

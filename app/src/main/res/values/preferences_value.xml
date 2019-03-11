@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="key_pref_storage">pref_storage</string>
+    <string-array name="pref_storage_values">
+        <item>Internal storage</item>
+        <item>SD card</item>
+    </string-array>
+
+</resources>
