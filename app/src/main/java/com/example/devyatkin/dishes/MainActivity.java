@@ -1,7 +1,10 @@
 package com.example.devyatkin.dishes;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -55,7 +58,6 @@ public class MainActivity extends AppCompatActivity
             R.drawable.ic_porridge,
     };
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,8 +77,14 @@ public class MainActivity extends AppCompatActivity
         //get content header and dishesList
         mainList = findViewById(R.id.main_list);
 
+        String[] storageList = getResources().getStringArray(R.array.pref_storage_values);
+
+        SharedPreferences shPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String storage = shPref.getString(getString(R.string.key_pref_storage), storageList[0]);
+        shPref.edit().putString(getString(R.string.key_pref_storage), storage).apply();
+
         //give context to DishesFileSystem
-        DishesFileSystem.setContext(this);
+        DishesFileSystem.setContext(this, storage);
         //check and create(if it's necessary) file system for application
         DishesFileSystem.InitDirectory();
     }
@@ -159,7 +167,8 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Toast.makeText(this, "<" + getResources().getString(R.string.action_settings) + "> не доступно", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "<" + getResources().getString(R.string.action_settings) + "> не доступно", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(this, PreferenceActivity.class));
             return true;
         }
 

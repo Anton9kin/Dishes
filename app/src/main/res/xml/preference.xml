@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:key="@string/key_pref_storage"
+        android:summary="Область хранения"
+        android:title="Хранение"
+        android:entries="@array/pref_storage_values"
+        android:entryValues="@array/pref_storage_values"
+        />
+</PreferenceScreen>
