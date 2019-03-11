@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity
     private List<File> dir_list;
     private List<String> dir_path = new ArrayList<>();
     private ListView mainList;
+    private int mainListPosition = 0;
     private boolean isDishList = false;
     private MenuItem itemAdd;
     private String currentCategory;
@@ -97,8 +98,9 @@ public class MainActivity extends AppCompatActivity
                 createDishesList(DishesFileSystem.getListFavorites());
                 currentCategory = getResources().getString(R.string.nav_favorites);
             }
-            else
+            else {
                 createDishesList(currentCategory);
+            }
         }
 
         super.onResume();
@@ -281,6 +283,9 @@ public class MainActivity extends AppCompatActivity
         DishAdapter dishAdapter = new DishAdapter(this, R.layout.list_dish, dishes);
         mainList.setAdapter(dishAdapter);
 
+        if (mainListPosition != 0)
+            mainList.setSelection(mainListPosition);
+
         String[] categories = getResources().getStringArray(R.array.category_list);
         getSupportActionBar().setTitle(category);
 
@@ -295,9 +300,13 @@ public class MainActivity extends AppCompatActivity
                     //Dish dish = (Dish)parent.getItemAtPosition(position);
                     //get selected file
                     String file = dir_path.get(position);
+
+                    mainListPosition = mainList.getFirstVisiblePosition();
+
                     //load Activity with content of dish
                     //loadDishContentActivity(dish, false);
                     loadDishContentActivity(file, false);
+
                 }
             });
         }
